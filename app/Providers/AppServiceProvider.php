@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Filament\Support\Facades\FilamentIcon;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\MenuItem;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        FilamentIcon::register([
+            'panels::pages.dashboard.navigation-item' => 'heroicon-s-home', // Ikon pencarian
+        ]);
     }
+
 }

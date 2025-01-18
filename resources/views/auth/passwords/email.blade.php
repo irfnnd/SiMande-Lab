@@ -1,47 +1,80 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        .auth-box {
+            width: 100%;
+            max-width: 400px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
+        .auth-logo img {
+            max-width: 250px;
+        }
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+        .auth-box h4 {
+            font-weight: bold;
+            text-align: center;
+            color: #212529;
+        }
+    </style>
+</head>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+<body>
+    <div class="auth-box">
+        <a href="/" class="auth-logo mb-4 d-flex justify-content-center">
+            <img src="logo.png" alt="Logo">
+        </a>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        <h4 class="mb-4">Forgot Password</h4>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
             </div>
-        </div>
+        @endif
+
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Alamat Email <span class="text-danger">*</span></label>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                    name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
+                    placeholder="Enter your email">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="mb-3 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Kirim tautan reset kata sandi</button>
+            </div>
+        </form>
     </div>
-</div>
-@endsection
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
