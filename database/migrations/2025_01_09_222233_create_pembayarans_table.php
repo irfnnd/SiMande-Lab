@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('permintaan_id')->constrained('permintaan_pengujians')->onDelete('cascade');
             $table->decimal('jumlah', 10, 2); // Total biaya
+            $table->string('bukti_pembayaran')->nullable();
             $table->enum('status', ['Belum Bayar', 'Lunas'])->default('Belum Bayar');
             $table->date('tanggal_pembayaran')->nullable();
             $table->timestamps();

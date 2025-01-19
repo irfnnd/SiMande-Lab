@@ -21,7 +21,7 @@ class SertifikatPengujianResource extends Resource
     protected static ?string $navigationGroup = 'Permohonan Uji';
 
     protected static ?string $navigationLabel = 'Sertifikat Pengujian';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
     protected static ?string $navigationIcon = 'heroicon-s-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -53,40 +53,43 @@ class SertifikatPengujianResource extends Resource
                 Tables\Columns\TextColumn::make('permintaanPengujian.id')
                     ->label('ID Permintaan')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nomor_sertifikat')
-                    ->label('Nomor Sertifikat')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('permintaanPengujian.pelanggan.nama_pelanggan')
+                    ->label('Nama Pelanggan'),
                 Tables\Columns\TextColumn::make('tanggal_terbit')
                     ->label('Tanggal Terbit')
-                    ->date(),
+                    ->default('Belum Diisi'),
                 Tables\Columns\TextColumn::make('file_path')
                     ->badge()
                     ->label('File')
-                    ->url(fn ($record) => asset('storage/' . $record->file_path), true)
+                    ->url(fn($record) => asset('storage/' . $record->file_path), true)
                     ->color('info')
-                    ->openUrlInNewTab(),
+                    ->openUrlInNewTab()
+                    ->default('Belum Diisi'),
             ])
             ->filters([
                 Filter::make('tanggal_terbit')
-                ->form([
-                    DatePicker::make('dari_tanggal_terbit'),
-                    DatePicker::make('sampai_tanggal_terbit'),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['dari_tanggal_terbit'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('', '>=', $date),
-                        )
-                        ->when(
-                            $data['sampai_tanggal_terbit'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('', '<=', $date),
-                        );
-                })            ])
+                    ->form([
+                        DatePicker::make('dari_tanggal_terbit'),
+                        DatePicker::make('sampai_tanggal_terbit'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['dari_tanggal_terbit'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('tanggal_terbit', '>=', $date),
+                            )
+                            ->when(
+                                $data['sampai_tanggal_terbit'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('tanggal_terbit', '<=', $date),
+                            );
+                    })
+            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label('Isi Data Sertifikat'),
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat Detail')
+                    ->icon('heroicon-s-clipboard-document-list')
+                    ->color('info'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

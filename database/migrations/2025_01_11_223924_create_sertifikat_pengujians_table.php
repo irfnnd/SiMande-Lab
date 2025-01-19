@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('sertifikat_pengujians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('permintaan_id')->constrained('permintaan_pengujians')->onDelete('cascade');
-            $table->string('nomor_sertifikat')->unique();
-            $table->date('tanggal_terbit');
-            $table->string('file_path');
+            $table->string('nomor_sertifikat')->unique()->nullable();
+            $table->date('tanggal_terbit')->nullable();
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }
