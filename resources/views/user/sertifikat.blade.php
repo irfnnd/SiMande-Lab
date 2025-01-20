@@ -5,7 +5,7 @@
 
   <!-- Form Container -->
   <div class="container d-flex justify-content-center align-items-center mt-5" style="min-height: 70vh;">
-    <form action="#" method="post" role="form" class="php-email-form p-4 shadow rounded" style="width: 100%; max-width: 600px; background-color: #D9D9D9;">
+    <form action="#" method="post" role="form" class="php-email-form p-4 shadow rounded" style="width: 100%; max-width: 600px; background-color;">
       <h3 class="text-center mb-4">Silahkan Download Hasil Pengujian Anda</h3>
 
       <div class="row">

@@ -11,13 +11,15 @@
 
 
   <!-- Favicons -->
-  <link href="https://biropbj.sumbarprov.go.id/img/sumbar.png" rel="icon">
+  <link href="https://biropbj.sumbarprov.go.id/img/sumbar.png" rel="icon" >
   <link href="{{asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="{{asset('template-bootstrap/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -44,11 +46,12 @@
   <header id="header" class="header sticky-top">
     <div class="branding d-flex align-items-center">
 
-      <div class="container position-relative d-flex align-items-center justify-content-between">
+      <div class="container position-absolute d-flex align-items-center justify-content-between">
         <a href="index.html" class=" d-flex align-items-center me-auto">
           <!-- Uncomment the line below if you also wish to use an image logo -->
-          <img src="https://biropbj.sumbarprov.go.id/img/sumbar.png" alt="Logo SiMande-Lab" class="logo me-2" style="height: 70px;">
-          <h1 class="sitename">SiMande-Lab</h1>
+          <img src="https://biropbj.sumbarprov.go.id/img/sumbar.png" alt="Logo SiMande-Lab" class="logo me-2"
+            style="height: 40px;">
+          <h1 class="fs-5" style="margin:0">SiMande-Lab</h1>
         </a>
 
         <nav id="navmenu" class="navmenu">
@@ -63,6 +66,13 @@
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
         <a class="cta-btn d-none d-sm-block" href="#appointment">login</a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
+        <a class="cta-btn d-none d-sm-block" href="#"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          Logout
+        </a>
 
       </div>
 
@@ -157,7 +167,8 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -173,43 +184,43 @@
   <!-- Main JS File -->
   <script src="{{asset('template-bootstrap/js/main.js')}}"></script>
   <script>
-  // Tangkap elemen-elemen penting
-  const form = document.getElementById('form-pengajuan');
-  const table = document.getElementById('result-table');
-  const tableBody = document.getElementById('table-body');
+    // Tangkap elemen-elemen penting
+    const form = document.getElementById('form-pengajuan');
+    const table = document.getElementById('result-table');
+    const tableBody = document.getElementById('table-body');
 
-  // Event listener untuk form
-  form.addEventListener('submit', function (e) {
-    e.preventDefault(); // Mencegah reload halaman
+    // Event listener untuk form
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // Mencegah reload halaman
 
-    // Ambil nilai dari form
-    const kodePelanggan = document.getElementById('kode_pelanggan').value;
-    const sampelDiambilOleh = document.getElementById('sampel_diambil_oleh').value;
-    const kodeSample = document.getElementById('kode_sample').value;
+      // Ambil nilai dari form
+      const kodePelanggan = document.getElementById('kode_pelanggan').value;
+      const sampelDiambilOleh = document.getElementById('sampel_diambil_oleh').value;
+      const kodeSample = document.getElementById('kode_sample').value;
 
-    // Validasi sederhana
-    if (!kodePelanggan || !sampelDiambilOleh || !kodeSample) {
-      alert('Mohon lengkapi semua field!');
-      return;
-    }
+      // Validasi sederhana
+      if (!kodePelanggan || !sampelDiambilOleh || !kodeSample) {
+        alert('Mohon lengkapi semua field!');
+        return;
+      }
 
-    // Buat baris baru di tabel
-    const newRow = `
+      // Buat baris baru di tabel
+      const newRow = `
       <tr>
         <td>${kodePelanggan}</td>
         <td>${sampelDiambilOleh}</td>
         <td>${kodeSample}</td>
       </tr>
     `;
-    tableBody.innerHTML += newRow;
+      tableBody.innerHTML += newRow;
 
-    // Tampilkan tabel
-    table.style.display = 'block';
+      // Tampilkan tabel
+      table.style.display = 'block';
 
-    // Reset form
-    form.reset();
-  });
-</script>
+      // Reset form
+      form.reset();
+    });
+  </script>
 
 
 </body>

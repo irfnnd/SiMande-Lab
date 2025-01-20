@@ -316,7 +316,7 @@ h6 {
 
 @media (max-width: 1200px) {
   .header .logo {
-    order: 1;
+    order: 0;
   }
 
   .header .cta-btn {
@@ -849,7 +849,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 0px 0;
   scroll-margin-top: 72px;
   overflow: clip;
 }
@@ -858,7 +858,7 @@ section,
 
   section,
   .section {
-    scroll-margin-top: 60px;
+    scroll-margin-top: 0px;
   }
 }
 
@@ -1238,6 +1238,17 @@ section,
 
 .appointment .php-email-form button[type=submit]:hover {
   background: color-mix(in srgb, var(--accent-color) 90%, white 15%);
+}
+.appointment .php-email-form button[type=reset] {
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.appointment .php-email-form button[type=reset]:hover {
+  background: color-mix(in srgb 90%, white 15%);
 }
 
 /*--------------------------------------------------------------

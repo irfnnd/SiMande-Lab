@@ -2,8 +2,8 @@
 @section('content')
 <section id="appointment" class="appointment section">
     <div class="container d-flex justify-content-center align-items-center mt-5" style="min-height: 70vh;">
-      <form action="#" method="post" role="form" class="php-email-form p-4 shadow rounded" style="width: 100%; max-width: 600px; background-color: #476072;">
-        <h3 class="text-center mb-4 text-white">Feedback</h3>
+      <form action="#" method="post" role="form" class="php-email-form p-4 shadow rounded" style="width: 100%; max-width: 600px; background-color: #ffffff;">
+        <h3 class="text-center mb-4 text-black text-bold">Feedback</h3>
 
         <!-- Jenis Kelamin -->
         <div class="bg-white p-3 mb-3 rounded">
