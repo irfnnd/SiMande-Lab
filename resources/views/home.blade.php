@@ -2,39 +2,46 @@
 @section('content')
 <!-- Doctors Section -->
 <section id="doctors" class="doctors section position-relative">
-
-  <!-- Teks Selamat Datang -->
-  <div class="hero-text position-absolute text-light p-4 w-100"
-    style="top: 400px; left: 0px; background: rgba(0, 0, 0, 0.3); z-index: 10;">
-    <h1 class="fw-bold text-white text-shadow">Selamat Datang Di SiMande-Lab</h1>
-    <p class="mb-0 text-shadow">Temukan informasi dan layanan terbaik yang kami tawarkan untuk memenuhi kebutuhan Anda
-    </p>
-  </div>
-
-  <!-- Carousel -->
-  <div id="heroCarousel" class="carousel slide position-relative m-0" data-bs-ride="carousel" data-bs-interval="2000">
-    <!-- Carousel Items -->
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="hero"
-          style="background-image: url('https://2.bp.blogspot.com/-gKDim8_9Mas/UQeBbWsyhbI/AAAAAAAAC4Y/YaDeuYab5U0/s1600/3.JPG'); background-size: cover; background-position: center; height: 400px;">
-        </div>
+<div class="container "  data-aos-delay="200">
+    <!-- Teks Selamat Datang -->
+    <div class="position-relative" style="height: 500px; overflow: hidden;">
+      <!-- Hero Text -->
+      <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+           style="bottom: 0; background: rgba(0, 0, 0, 0.3); z-index: 10;">
+        <h1 class="fw-bold text-white text-shadow">Selamat Datang Di SiMande-Lab</h1>
+        <p class="mb-0 text-shadow">Temukan informasi dan layanan terbaik yang kami tawarkan untuk memenuhi kebutuhan Anda</p>
       </div>
-      <div class="carousel-item">
-        <div class="hero"
-          style="background-image: url('https://www.hseprime.com/wp-content/uploads/2018/09/lab-pic-800x480-1.jpeg'); background-size: cover; background-position: center; height: 400px;">
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="hero"
-          style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeIyF-j6RaJCxNfVDMKas56G6DFG3smSGetQ&s'); background-size: cover; background-position: center; height: 400px;">
+
+      <!-- Carousel -->
+      <div id="heroCarousel" class="carousel slide position-relative m-0" data-bs-ride="carousel" data-bs-interval="2000">
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="hero"
+                 style="background-image: url('https://2.bp.blogspot.com/-gKDim8_9Mas/UQeBbWsyhbI/AAAAAAAAC4Y/YaDeuYab5U0/s1600/3.JPG');
+                        background-size: cover; background-position: center; height: 400px;">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="hero"
+                 style="background-image: url('https://www.hseprime.com/wp-content/uploads/2018/09/lab-pic-800x480-1.jpeg');
+                        background-size: cover; background-position: center; height: 400px;">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="hero"
+                 style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeIyF-j6RaJCxNfVDMKas56G6DFG3smSGetQ&s');
+                        background-size: cover; background-position: center; height: 400px;">
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+</div>
+
 
   <!-- Container -->
-  <div class="container mt-5 mb-2">
+  <div class="container mt-5 pb-5">
     <div class="row gy-4">
       <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
         <div class="team-member d-flex align-items-start">

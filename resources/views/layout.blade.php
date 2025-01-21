@@ -43,42 +43,38 @@
 
 <body class="index-page">
 
-  <header id="header" class="header sticky-top">
-    <div class="branding d-flex align-items-center">
+    <header id="header" class="header sticky-top">
 
-      <div class="container position-absolute d-flex align-items-center justify-content-between">
-        <a href="index.html" class=" d-flex align-items-center me-auto">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <img src="https://biropbj.sumbarprov.go.id/img/sumbar.png" alt="Logo SiMande-Lab" class="logo me-2"
-            style="height: 40px;">
-          <h1 class="fs-5" style="margin:0">SiMande-Lab</h1>
-        </a>
+        <div class="branding d-flex align-items-center">
 
-        <nav id="navmenu" class="navmenu">
-          <ul>
-            <li><a href="/">Home<br></a></li>
-            <li><a href="/permohonan-uji">Permohonan uji</a></li>
-            <li><a href="/pembayaran">Pembayaran</a></li>
-            <li><a href="/tracking">Tracking</a></li>
-            <li><a href="/feedback">Feedback</a></li>
-            <li><a href="/sertifikat">Sertifikat</a></li>
-          </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-        <a class="cta-btn d-none d-sm-block" href="#appointment">login</a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-          @csrf
-        </form>
-        <a class="cta-btn d-none d-sm-block" href="#"
-          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-          Logout
-        </a>
+          <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a href="index.html" class=" d-flex align-items-center me-auto">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <img src="https://biropbj.sumbarprov.go.id/img/sumbar.png" alt="Logo SiMande-Lab" class="logo me-2"
+                  style="height: 40px;">
+                <h1 class="fs-5" style="margin:0">SiMande-Lab</h1>
+              </a>
 
-      </div>
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="/">Home<br></a></li>
+                    <li><a href="/permohonan-uji">Permohonan uji</a></li>
+                    <li><a href="/pembayaran">Pembayaran</a></li>
+                    <li><a href="/tracking">Tracking</a></li>
+                    <li><a href="/feedback">Feedback</a></li>
+                    <li><a href="/sertifikat">Sertifikat</a></li>
+                  </ul>
+              <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
 
-    </div>
+            <a class="cta-btn d-none d-sm-block" href="#appointment">Masuk</a>
+            <a class="cta-btn2 d-none d-sm-block" href="#appointment">Daftar</a>
 
-  </header>
+          </div>
+
+        </div>
+
+      </header>
 
   <main class="main">
     @yield("content")

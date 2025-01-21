@@ -18,7 +18,7 @@
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root { 
+:root {
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #2c4964; /* Color for headings, subheadings and title throughout the website */
@@ -278,7 +278,7 @@ h6 {
 
 .header .branding {
   min-height: 60px;
-  padding: 10px 0;
+  padding: 15px 0;
 }
 
 .header .logo {
@@ -312,6 +312,22 @@ h6 {
 .header .cta-btn:focus:hover {
   color: var(--contrast-color);
   background: color-mix(in srgb, var(--accent-color), transparent 15%);
+}
+.header .cta-btn2,
+.header .cta-btn2:focus {
+  color: var(--contrast-color);
+  background: var(--bs-gray-500);
+  font-size: 14px;
+  padding: 8px 25px;
+  margin: 0 0 0 8px;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.header .cta-btn2:hover,
+.header .cta-btn2:focus:hover {
+  color: var(--contrast-color);
+  background: color-mix(in srgb, var(--bs-gray-500), transparent 15%);
 }
 
 @media (max-width: 1200px) {
@@ -1743,7 +1759,7 @@ section,
 .btn-color{
   background-color: #0e1c36;
   color: #fff;
-  
+
 }
 
 .profile-image-pic{
