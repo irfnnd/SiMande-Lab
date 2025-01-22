@@ -179,45 +179,19 @@
 
   <!-- Main JS File -->
   <script src="{{asset('template-bootstrap/js/main.js')}}"></script>
-  <script>
-    // Tangkap elemen-elemen penting
-    const form = document.getElementById('form-pengajuan');
-    const table = document.getElementById('result-table');
-    const tableBody = document.getElementById('table-body');
-
-    // Event listener untuk form
-    form.addEventListener('submit', function (e) {
-      e.preventDefault(); // Mencegah reload halaman
-
-      // Ambil nilai dari form
-      const kodePelanggan = document.getElementById('kode_pelanggan').value;
-      const sampelDiambilOleh = document.getElementById('sampel_diambil_oleh').value;
-      const kodeSample = document.getElementById('kode_sample').value;
-
-      // Validasi sederhana
-      if (!kodePelanggan || !sampelDiambilOleh || !kodeSample) {
-        alert('Mohon lengkapi semua field!');
-        return;
-      }
-
-      // Buat baris baru di tabel
-      const newRow = `
-      <tr>
-        <td>${kodePelanggan}</td>
-        <td>${sampelDiambilOleh}</td>
-        <td>${kodeSample}</td>
-      </tr>
-    `;
-      tableBody.innerHTML += newRow;
-
-      // Tampilkan tabel
-      table.style.display = 'block';
-
-      // Reset form
-      form.reset();
-    });
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    </script>
+    @endif
 
 </body>
 
