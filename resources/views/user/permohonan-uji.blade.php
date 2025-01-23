@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-    <section id="page-title" class="page-title-mini p-4" style="background-color: var(--accent-color)">
+    <section id="page-title" class="page-title-mini p-4 " style="background-color: var(--accent-color)">
         <div class="container clearfix">
             <h4 class="text-white m-0">Permohonan Uji</h4>
         </div>
@@ -18,7 +18,8 @@
                                 Uji</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="masyarakat-tab" data-bs-toggle="tab" href="#masyarakat">Lihat Data
+                            <a class="nav-link" id="data-permohonan-tab" data-bs-toggle="tab" href="#data-permohonan">Lihat
+                                Data
                                 Permohonan</a>
                         </li>
                     </ul>
@@ -110,13 +111,14 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-3">
-                                                    <label for="parameter" class="form-label">Parameter Pengujian <span
+                                                    <label for="parameter_id" class="form-label">Parameter Pengujian <span
                                                             class="text-danger">*</span></label>
-                                                    <select class="form-select" name="parameter" id="parameter" required>
+                                                    <select class="form-select" name="parameter_id" id="parameter_id"
+                                                        disabled>
                                                         <option value="">-- Pilih Parameter --</option>
                                                         @foreach ($parameters as $parameter)
-                                                            <option value="{{ $parameter->id }}">{{ $parameter->parameter }}
-                                                            </option>
+                                                            <option value="{{ $parameter->id }}">
+                                                                {{ $parameter->parameter }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -124,6 +126,8 @@
                                                     <label for="kode_parameter" class="form-label">Kode Parameter</label>
                                                     <input type="text" name="kode_parameter" id="kode_parameter"
                                                         class="form-control" readonly disabled>
+                                                    <input type="text" hidden name="parameter" id="parameter"
+                                                        class="form-control" readonly>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="satuan" class="form-label">Satuan</label>
@@ -152,16 +156,20 @@
                                                 </div>
                                                 <div class="row g-3 mt-3">
                                                     <div class="col-md-6">
-                                                        <label for="jumlah_titik" class="form-label fw-bold">Jumlah Titik</label>
+                                                        <label for="jumlah_titik" class="form-label fw-bold">Jumlah
+                                                            Titik</label>
                                                         <input type="number" name="jumlah_titik" id="jumlah_titik"
-                                                            data-name="jumlah_titik" class="form-control" required placeholder="Masukkan jumlah titik yang diinginkan"
+                                                            data-name="jumlah_titik" class="form-control" required
+                                                            placeholder="Masukkan jumlah titik yang diinginkan"
                                                             min="1">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="jumlah_biaya" class="form-label fw-bold">Jumlah Biaya</label>
+                                                    <label for="jumlah_biaya" class="form-label fw-bold">Jumlah
+                                                        Biaya</label>
                                                     <input type="number" hidden name="jumlah_biaya" id="jumlah_biaya"
-                                                        data-name="jumlah_biaya" class="form-control fw-bold text-danger fs-5" readonly>
+                                                        data-name="jumlah_biaya"
+                                                        class="form-control fw-bold text-danger fs-5" readonly>
                                                     <h1 id="jumlah_biaya_display" class="text-danger fw-bold">Rp. 0</h1>
                                                 </div>
                                             </div>
@@ -179,41 +187,63 @@
                     </div>
 
                     <!-- Data Permohonan -->
-                    <div class="tab-pane fade" id="masyarakat">
-                        <div class="card">
-                            <div class="card-header mb-3">
-                                <p class="mb-0 fw-bold">Daftar Data Permohonan Uji</p>
+                    <div class="tab-pane fade" id="data-permohonan">
+                        <div class="card border-0">
+                            <div class="card-header mb-3 bg-white">
+                                <h4 class="">Daftar Data Permohonan Uji</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-sm">
+                                    <table class="table table-borderless table-hover">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
                                                 <th>ID Pelanggan</th>
-                                                <th>Kode Sampel</th>
-                                                <th>Tanggal Pengambilan</th>
-                                                <th>Waktu Pengambilan</th>
+                                                <th>Pengambilan Sampel</th>
                                                 <th>Parameter Uji</th>
+                                                <th>Jumlah Titik</th>
+                                                <th>Total Biaya</th>
                                                 <th>Status</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>318031</td>
-                                                <td>SP2023001</td>
-                                                <td>2025-01-20</td>
-                                                <td>10:00</td>
-                                                <td>Parameter A</td>
-                                                <td><span class="badge bg-success">Selesai</span></td>
-                                                <td>
-                                                    <button class="btn btn-info btn-sm">Detail</button>
-                                                    <button class="btn btn-danger btn-sm">Hapus</button>
-                                                </td>
-                                            </tr>
-                                            <!-- Data dinamis bisa ditampilkan dengan looping dari backend -->
+                                            @forelse ($permohonan as $index => $data)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $data->pelanggan_id }}</td>
+                                                    <td>{{ $data->pengambilan_sampel }}</td>
+                                                    <td>{{ $data->parameter ?? 'Belum ditentukan' }}
+                                                    <td>{{ $data->jumlah_titik ?? 'Belum ditentukan'}}</td>
+                                                    <td>{{ $data->total_biaya ?? 'Belum ditentukan'}}</td>
+                                                    <td>{{ $data->status }}</td>
+                                                    {{-- <td>
+                                                    @if ($data->status == 'selesai')
+                                                    <span class="badge bg-success">Selesai</span>
+                                                    @else
+                                                    <span class="badge bg-warning">Proses</span>
+                                                    @endif
+                                                </td> --}}
+                                                    <td>
+                                                        {{-- <a href="{{ route('permohonan.detail', $data->id) }}" class="btn btn-info btn-sm">Detail</a>
+                                                    <form action="{{ route('permohonan.hapus', $data->id) }}" method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus permohonan ini?')">Hapus</button>
+                                                    </form> --}}
+                                                        @if ($data->status == 'Pending' && $data->pengambilan_sampel == 'Pelanggan'  && $data->parameter != null)
+                                                            <a href="#">Batalkan</a>
+                                                        @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
+                                                            <a href="#">Setuju</a>
+                                                        @endif
+
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="8" class="text-center">Tidak ada data permohonan.</td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
@@ -256,7 +286,7 @@
         });
     </script>
     <script>
-        document.getElementById('parameter').addEventListener('change', function() {
+        document.getElementById('parameter_id').addEventListener('change', function() {
             const parameterId = this.value;
 
             if (parameterId) {
@@ -270,6 +300,7 @@
                             document.getElementById('volume_sampel').value = data.volume_sampel;
                             document.getElementById('metode_uji').value = data.metode_uji;
                             document.getElementById('tarif').value = data.tarif;
+                            document.getElementById('parameter').value = data.parameter;
                         } else {
                             alert('Parameter not found');
                         }
@@ -280,9 +311,12 @@
             } else {
                 // Kosongkan input jika tidak ada parameter yang dipilih
                 document.getElementById('kode_parameter').value = '';
-                document.getElementById('satuan').value = '';
                 document.getElementById('metode_uji').value = '';
+                document.getElementById('wadah').value = '';
+                document.getElementById('volume_sampel').value = '';
+                document.getElementById('satuan').value = '';
                 document.getElementById('tarif').value = '';
+                document.getElementById('parameter').value = '';
             }
         });
     </script>
@@ -293,7 +327,8 @@
             const jumlahTitik = parseFloat(this.value) || 1;
             const jumlahBiaya = tarif * jumlahTitik;
             document.getElementById('jumlah_biaya').value = jumlahBiaya;
-            document.getElementById('jumlah_biaya_display').textContent = `Rp. ${jumlahBiaya.toLocaleString('id-ID')}`;
+            document.getElementById('jumlah_biaya_display').textContent =
+                `Rp. ${jumlahBiaya.toLocaleString('id-ID')}`;
         });
     </script>
 @endsection

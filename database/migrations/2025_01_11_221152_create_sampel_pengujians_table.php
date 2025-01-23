@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_sampel')->unique();
             $table->foreignId('permintaan_id')->constrained('permintaan_pengujians')->onDelete('cascade');
-            $table->foreignId('parameter_id')->nullable()->constrained('parameters')->onDelete('cascade');
+            $table->string('parameter')->nullable();
             $table->string('kelurahan')->nullable();
             $table->string('kecamatan')->nullable();
             $table->string('kota')->nullable();

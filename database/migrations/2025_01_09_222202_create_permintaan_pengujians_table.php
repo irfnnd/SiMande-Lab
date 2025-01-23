@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('pelanggan_id')->constrained('pelanggans')->onDelete('cascade');
             $table->enum('pengambilan_sampel', ['Pelanggan', 'Petugas']);
-            $table->foreignId('parameter_id')->nullable()->constrained('parameters')->onDelete('cascade');
-            $table->integer('jumlah_titik');
-            $table->decimal('total_biaya', 10, 2); // Total biaya
+            $table->string('parameter')->nullable();
+            $table->integer('jumlah_titik')->nullable();
+            $table->decimal('total_biaya', 10, 2)->nullable(); // Total biaya
             $table->enum('status', ['Pending', 'Disetujui', 'Ditolak', 'Menunggu Pembayaran','Bukti Pembayaran Tidak Valid','Bukti Pembayaran Valid', 'Menunggu Pengambilan Sampel','Proses Pengujian', 'Selesai'])->default('Pending');
             $table->timestamps();
         });

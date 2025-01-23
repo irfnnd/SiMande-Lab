@@ -20,12 +20,14 @@ class PermohonanController extends Controller
         $pelanggan = Pelanggan::where('user_id', $userId)->first();
 
         $parameters = Parameter::all();
+        $idPelanggan = $pelanggan->id;
+        $permohonan = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->get();
 
         $idPelanggan = $pelanggan->id;
 
         // Generate kode sampel
         $kodeSampel = SampelPengujian::generateKode();
-        return view('user.permohonan-uji', compact('idPelanggan', 'kodeSampel', 'parameters'));
+        return view('user.permohonan-uji', compact('idPelanggan', 'kodeSampel', 'parameters','permohonan'));
     }
 
     /**
@@ -41,13 +43,11 @@ class PermohonanController extends Controller
      */
     public function store(Request $request)
     {
-
-
         // Buat permintaan pengujian
         $permintaanPengujian = PermintaanPengujian::create([
             'pelanggan_id' => $request->id_pelanggan,
             'pengambilan_sampel' => $request->pengambilan_sampel,
-            'parameter_id' => $request->parameter_id,
+            'parameter' => $request->parameter,
             'jumlah_titik' => $request->jumlah_titik,
             'total_biaya' => $request->jumlah_biaya,
         ]);
@@ -114,6 +114,7 @@ class PermohonanController extends Controller
                 'volume_sampel' => $parameter->volume_sampel,
                 'metode_uji' => $parameter->metode_uji,
                 'tarif' => $parameter->tarif,
+                'parameter' => $parameter->parameter,
             ]);
         }
 

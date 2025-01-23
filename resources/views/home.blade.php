@@ -1,8 +1,9 @@
 @extends('layout')
 @section('content')
 <!-- Doctors Section -->
+
 <section id="doctors" class="doctors section position-relative">
-<div class="container "  data-aos-delay="200">
+<div class=""  data-aos-delay="200">
     <!-- Teks Selamat Datang -->
     <div class="position-relative" style="height: 500px; overflow: hidden;">
       <!-- Hero Text -->

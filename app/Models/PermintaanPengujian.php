@@ -9,8 +9,10 @@ class PermintaanPengujian extends Model
     protected $fillable = [
         'pelanggan_id',
         'pengambilan_sampel',
-        'parameter_id',
+        'parameter',
         'status',
+        'jumlah_titik',
+        'total_biaya',
     ];
 
     public function pelanggan()
@@ -20,6 +22,10 @@ class PermintaanPengujian extends Model
     public function parameter()
     {
         return $this->belongsTo(Parameter::class);
+    }
+    public function parameters()
+    {
+        return $this->belongsTo(Parameter::class)->withDefault();
     }
     public function sertifikat()
     {
