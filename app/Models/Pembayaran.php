@@ -17,5 +17,9 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(PermintaanPengujian::class, 'permintaan_id');
     }
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'pelanggan_id');
+    }
 
 }

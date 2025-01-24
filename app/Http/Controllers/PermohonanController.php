@@ -27,7 +27,7 @@ class PermohonanController extends Controller
 
         // Generate kode sampel
         $kodeSampel = SampelPengujian::generateKode();
-        return view('user.permohonan-uji', compact('idPelanggan', 'kodeSampel', 'parameters','permohonan'));
+        return view('user.permohonan-uji', compact('idPelanggan', 'kodeSampel', 'parameters', 'permohonan'));
     }
 
     /**
@@ -120,4 +120,43 @@ class PermohonanController extends Controller
 
         return response()->json(['message' => 'Parameter not found'], 404);
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // $request->validate([
+        //     'status' => 'required|string',
+        // ]);
+
+        $data = 'Menunggu Pembayaran';
+
+        $permintaan = PermintaanPengujian::findOrFail($id);
+
+        // Ambil riwayat status sebelumnya
+        $history = $permintaan->status_history ? json_decode($permintaan->status_history, true) : [];
+
+        // Tambahkan status baru ke riwayat
+        $history[] = [
+            'status' => $permintaan->status, // Status sebelumnya
+            'updated_at' => now()->toDateTimeString(), // Waktu perubahan
+        ];
+
+        // Update status baru dan riwayat
+        $permintaan->update([
+            'status' => $data,
+            'status_history' => json_encode($history),
+        ]);
+
+        return response()->json(['message' => 'Status updated successfully']);
+    }
+
+    public function getStatusHistory($id)
+    {
+        $permintaan = PermintaanPengujian::findOrFail($id);
+
+        // Decode riwayat status
+        $history = $permintaan->status_history ? json_decode($permintaan->status_history, true) : [];
+
+        return view('user.timeline', compact('permintaan', 'history'));
+    }
+
 }

@@ -13,6 +13,8 @@ class PermintaanPengujian extends Model
         'status',
         'jumlah_titik',
         'total_biaya',
+        'status_history',
+        'updated_at',
     ];
 
     public function pelanggan()

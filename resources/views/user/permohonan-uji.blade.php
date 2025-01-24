@@ -1,13 +1,14 @@
 @extends('layout')
 
 @section('content')
-    <section id="page-title" class="page-title-mini p-4 " style="background-color: var(--accent-color)">
+    <div id="page-title" class="page-title-mini p-4 " data-aos="fade-up" style="background-color: var(--accent-color)">
         <div class="container clearfix">
-            <h4 class="text-white m-0">Permohonan Uji</h4>
+            <h4 class="text-white">Permohonan Uji</h4>
+            <p class="mb-0">Permohonan akan diterima oleh petugas penguji</p>
         </div>
-    </section>
+    </div>
 
-    <section id="content">
+    <div id="content">
         <div class="content-wrap pt-5 pb-5">
             <!-- Tab Navigation -->
             <div class="row mb-4">
@@ -190,7 +191,7 @@
                     <div class="tab-pane fade" id="data-permohonan">
                         <div class="card border-0">
                             <div class="card-header mb-3 bg-white">
-                                <h4 class="">Daftar Data Permohonan Uji</h4>
+                                <p class="fw-bold">Daftar Data Permohonan Uji</p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -214,8 +215,8 @@
                                                     <td>{{ $data->pelanggan_id }}</td>
                                                     <td>{{ $data->pengambilan_sampel }}</td>
                                                     <td>{{ $data->parameter ?? 'Belum ditentukan' }}
-                                                    <td>{{ $data->jumlah_titik ?? 'Belum ditentukan'}}</td>
-                                                    <td>{{ $data->total_biaya ?? 'Belum ditentukan'}}</td>
+                                                    <td>{{ $data->jumlah_titik ?? 'Belum ditentukan' }}</td>
+                                                    <td>{{ $data->total_biaya ?? 'Belum ditentukan' }}</td>
                                                     <td>{{ $data->status }}</td>
                                                     {{-- <td>
                                                     @if ($data->status == 'selesai')
@@ -231,8 +232,14 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus permohonan ini?')">Hapus</button>
                                                     </form> --}}
-                                                        @if ($data->status == 'Pending' && $data->pengambilan_sampel == 'Pelanggan'  && $data->parameter != null)
-                                                            <a href="#">Batalkan</a>
+                                                        @if ( $data->pengambilan_sampel == 'Pelanggan' && $data->parameter != null)
+                                                            <form
+                                                                action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <a type="submit"
+                                                                    class="text-danger">Batalkan</a>
+                                                            </form>
                                                         @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
                                                             <a href="#">Setuju</a>
                                                         @endif

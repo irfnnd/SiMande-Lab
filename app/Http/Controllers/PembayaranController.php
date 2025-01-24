@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pelanggan;
+use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
@@ -11,7 +14,13 @@ class PembayaranController extends Controller
      */
     public function index()
     {
-        return view('user.pembayaran');
+        $userId = Auth::id();
+        $pelanggan = Pelanggan::where('user_id', $userId)->first();
+
+        $idPelanggan = $pelanggan->id;
+        $data = Pembayaran::where('pelanggan_id', $idPelanggan)->get();
+
+        return view('user.pembayaran', compact( 'data'));
     }
 
     /**
@@ -19,15 +28,32 @@ class PembayaranController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
+    public function uploadBukti(Request $request)
+    {
+        // Validasi input
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validasi file gambar
+        ]);
+
+        // Simpan gambar ke direktori storage/app/public/bukti_pembayaran
+        $path = $request->file('image')->store('bukti-pembayaran', 'public');
+
+        // Update database dengan path gambar
+        $pembayaran = Pembayaran::findOrFail($request->pembayaran_id);
+        $pembayaran->bukti_pembayaran = $path;
+        $pembayaran->save();
+        session()->flash('success', 'Bukti Pembayaran berhasil diupload.');
+        return redirect()->back();
+
     }
 
     /**
