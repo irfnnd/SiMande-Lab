@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pelanggan;
+use App\Models\PermintaanPengujian;
+use App\Models\SertifikatPengujian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SertifikatController extends Controller
 {
@@ -11,7 +15,14 @@ class SertifikatController extends Controller
      */
     public function index()
     {
-        return view('user.sertifikat');
+        $userId = Auth::id();
+        $pelanggan = Pelanggan::where('user_id', $userId)->first();
+
+        $idPelanggan = $pelanggan->id;
+        $permintaan = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->first();
+        $permintaan_id = $permintaan->id;
+        $data = SertifikatPengujian::where('permintaan_id', $permintaan_id)->get();
+        return view('user.sertifikat',compact('data'));
     }
 
     /**

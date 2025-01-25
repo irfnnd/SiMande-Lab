@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KepuasanPelanggan;
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
@@ -11,7 +14,11 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        return view('user.feedback');
+        $userId = Auth::id();
+        $pelanggan = Pelanggan::where('user_id', $userId)->first();
+
+        $pelanggan_id = $pelanggan->id;
+        return view('user.feedback', compact('pelanggan_id'));
     }
 
     /**
@@ -27,7 +34,23 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validasi data
+        $validatedData = $request->validate([
+            'pelanggan_id' => 'required',
+            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+            'umur' => 'required',
+            'pendidikan' => 'required',
+            'pekerjaan' => 'required|in:wiraswasta,PNS/TNI/POLRI,Pegawai Swasta,Lainnya',
+            'rating' => 'required|integer|min:1|max:5',
+            'feedback' => 'required|string|max:1000',
+        ]);
+
+
+        KepuasanPelanggan::create($validatedData);
+
+        session()->flash('success', 'Feedback Anda berhasil dikirim. Terima kasih!');
+        // Redirect dengan pesan sukses
+        return redirect()->back();
     }
 
     /**

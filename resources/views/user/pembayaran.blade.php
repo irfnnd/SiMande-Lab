@@ -3,11 +3,11 @@
     <!-- Appointment Section -->
     <div id="page-title" class="page-title-mini p-4" data-aos="fade-up" style="background-color: var(--accent-color)">
         <div class="container clearfix">
-            <h4 class="text-white">Pembayaran</h4>
-            <p class="mb-0">Pengujian akan dilakukan setelah proses pembayaran selesai</p>
+            <h4 class="text-white mb-1">Pembayaran</h4>
+            <p class="mb-0 text-white-50">Pengujian akan dilakukan setelah proses pembayaran selesai</p>
         </div>
     </div>
-    <section id="appointment" class="appointment section">
+    <section id="appointment" class="appointment section" data-aos="fade-up">
         <div class="container d-flex justify-content-center align-items-center pt-5 pb-5">
             <div class="p-3 rounded" style="width: 100%; max-width: 100vx; background-color: #ffffff;">
                 <h4 class="mb-3 fw-bold">Daftar tagihan</h4>
@@ -28,8 +28,41 @@
                                             class="text-success">{{ $item->status }}</span></p>
                                     <p class="d-inline me-3"><strong>Bukti Pembayaran:</strong> <a
                                             href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a></p>
-                                    <p class="d-inline me-3"><strong>Tagihan:</strong> <a href="{{route('tagihan.unduh', ['id' => $item->id])}}"
+                                    <p class="d-inline me-3"><strong>Tagihan:</strong> <a
+                                            href="{{ route('tagihan.unduh', ['id' => $item->id]) }}"
                                             class="text-primary">Cetak</a></p>
+                                    <div class="text-end">
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#uploadImageModal"
+                                            onclick="pembayaranId('{{ $item->id }}')">
+                                            Upload Bukti Pembayaran
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="card shadow-sm mb-3 border-0">
+                                <div class="card-body p-4">
+                                    <p class="text-center mb-0">Belum ada tagihan atau permintaan pengujian</p>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
+                    <div id="mobile-view" class="d-md-none">
+                        @forelse ($data as $item)
+                            <div class="card shadow-sm border-0 mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title mt-3"><strong>ID Permintaan Pengujian:</strong>
+                                        {{ $item->permintaan_id }}</h5>
+                                    <p class=""><strong>Total Harga:</strong> Rp.
+                                        {{ number_format($item->permintaan->total_biaya, 0, ',', '.') }}</p>
+                                    <p class=""><strong>Status:</strong> <span
+                                            class="text-success">{{ $item->status }}</span></p>
+                                    <p class=""><strong>Tagihan:</strong> <a
+                                            href="{{ route('tagihan.unduh', ['id' => $item->id]) }}"
+                                            class="text-primary">Cetak</a></p>
+                                    <p class=""><strong>Bukti Pembayaran:</strong> <a
+                                            href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a></p>
                                     <div class="text-end">
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#uploadImageModal"

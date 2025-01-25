@@ -3,19 +3,19 @@
 @section('content')
     <div id="page-title" class="page-title-mini p-4 " data-aos="fade-up" style="background-color: var(--accent-color)">
         <div class="container clearfix">
-            <h4 class="text-white">Permohonan Uji</h4>
-            <p class="mb-0">Permohonan akan diterima oleh petugas penguji</p>
+            <h4 class="text-white mb-1">Permohonan Uji</h4>
+            <p class="mb-0 text-white-50">Permohonan akan diterima oleh petugas penguji</p>
         </div>
     </div>
 
-    <div id="content">
+    <div id="content" data-aos="fade-up">
         <div class="content-wrap pt-5 pb-5">
             <!-- Tab Navigation -->
             <div class="row mb-4">
                 <div class="col">
                     <ul class="nav nav-tabs nav-justified">
                         <li class="nav-item">
-                            <a class="nav-link active" id="pmikel-tab" data-bs-toggle="tab" href="#pmikel">Ajukan Permohonan
+                            <a class="nav-link active" id="form-tab" data-bs-toggle="tab" href="#form">Ajukan Permohonan
                                 Uji</a>
                         </li>
                         <li class="nav-item">
@@ -30,17 +30,17 @@
             <div class="container">
                 <div class="tab-content">
                     <!-- Form Permohonan Uji -->
-                    <div class="tab-pane fade show active" id="pmikel">
-                        <div class="card">
-                            <div class="card-header">
-                                <p class="mb-0">Formulir Permohonan Pengujian</p>
+                    <div class="tab-pane fade show active" id="form">
+                        <div class="card border-0">
+                            <div class="card-header border-0 bg-white">
+                                <h4 class=" mb-0 text-center">Formulir Permohonan Pengujian</h4>
                             </div>
                             <div class="card-body">
                                 <form action="/permohonan-uji" method="POST">
                                     @csrf
-                                    <div class="card mt-4">
-                                        <div class="card-header">
-                                            <p class="mb-0">Informasi Sampel</p>
+                                    <div class="card border-0 mt-4">
+                                        <div class="card-header border-0 bg-white">
+                                            <h5 class=" mb-0">Informasi Sampel</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
@@ -81,9 +81,9 @@
                                         </div>
                                     </div>
                                     <!-- Informasi Sampel -->
-                                    <div class="card mt-4" id="informasiSampelCard">
-                                        <div class="card-header">
-                                            <p class="mb-0">Informasi Sampel</p>
+                                    <div class="card border-0 mt-4" id="informasiSampelCard">
+                                        <div class="card-header border-0 bg-white">
+                                            <h5 class="mb-0">Informasi Sampel</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
@@ -105,9 +105,9 @@
                                     </div>
 
                                     <!-- Parameter Pengujian -->
-                                    <div class="card mt-4" id="parameterPengujianCard">
-                                        <div class="card-header">
-                                            <p class="mb-0">Parameter Pengujian</p>
+                                    <div class="card mt-4 border-0 bg-white" id="parameterPengujianCard">
+                                        <div class="card-header border-0 bg-white">
+                                            <h5 class="mb-0">Parameter Pengujian</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
@@ -155,7 +155,7 @@
                                                     <input type="number" name="tarif" id="tarif"
                                                         class="form-control" readonly disabled>
                                                 </div>
-                                                <div class="row g-3 mt-3">
+                                                <div class="row g-3 mt-3 mb-3">
                                                     <div class="col-md-6">
                                                         <label for="jumlah_titik" class="form-label fw-bold">Jumlah
                                                             Titik</label>
@@ -171,14 +171,14 @@
                                                     <input type="number" hidden name="jumlah_biaya" id="jumlah_biaya"
                                                         data-name="jumlah_biaya"
                                                         class="form-control fw-bold text-danger fs-5" readonly>
-                                                    <h1 id="jumlah_biaya_display" class="text-danger fw-bold">Rp. 0</h1>
+                                                    <h3 id="jumlah_biaya_display" class="text-danger">Rp. 0</h3>
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="row mt-4">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 d-flex ms-3">
                                             <button type="submit" class="btn btn-primary">Ajukan Permohonan</button>
                                         </div>
                                     </div>
@@ -190,8 +190,8 @@
                     <!-- Data Permohonan -->
                     <div class="tab-pane fade" id="data-permohonan">
                         <div class="card border-0">
-                            <div class="card-header mb-3 bg-white">
-                                <p class="fw-bold">Daftar Data Permohonan Uji</p>
+                            <div class="card-header border-0 mb-1 bg-white">
+                                <h4 class="text-center">Daftar Data Permohonan Uji</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -199,7 +199,7 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>ID Pelanggan</th>
+                                                <th>ID Permintaan</th>
                                                 <th>Pengambilan Sampel</th>
                                                 <th>Parameter Uji</th>
                                                 <th>Jumlah Titik</th>
@@ -212,7 +212,7 @@
                                             @forelse ($permohonan as $index => $data)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $data->pelanggan_id }}</td>
+                                                    <td>{{ $data->id }}</td>
                                                     <td>{{ $data->pengambilan_sampel }}</td>
                                                     <td>{{ $data->parameter ?? 'Belum ditentukan' }}
                                                     <td>{{ $data->jumlah_titik ?? 'Belum ditentukan' }}</td>
@@ -232,7 +232,7 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus permohonan ini?')">Hapus</button>
                                                     </form> --}}
-                                                        @if ( $data->pengambilan_sampel == 'Pelanggan' && $data->parameter != null)
+                                                        @if ( $data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
                                                             <form
                                                                 action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
                                                                 method="POST">
@@ -243,6 +243,8 @@
                                                         @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
                                                             <a href="#">Setuju</a>
                                                         @endif
+
+                                                        <a href=""><i class="fas fa-circle-info"></i>  Detail</a>
 
                                                     </td>
                                                 </tr>

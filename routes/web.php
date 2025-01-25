@@ -30,7 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/get-parameter/{id}', [PermohonanController::class, 'getParameter']);
 
     Route::post('permohonan-uji/{id}/status', [PermohonanController::class, 'updateStatus'])->name('permohonan.updateStatus');
-    Route::get('permohonan-uji/{id}/history', [PermohonanController::class, 'getStatusHistory']);
+    Route::get('/get-status-history/{id}', [TrackingController::class, 'getStatusHistory']);
     Route::resource('tracking', TrackingController::class);
     Route::resource('sertifikat', SertifikatController::class);
     Route::resource('feedback', FeedbackController::class);

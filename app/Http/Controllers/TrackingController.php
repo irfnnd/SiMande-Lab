@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pelanggan;
+use App\Models\PermintaanPengujian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrackingController extends Controller
 {
@@ -11,7 +14,12 @@ class TrackingController extends Controller
      */
     public function index()
     {
-        return view('user.tracking');
+        $userId = Auth::id();
+        $pelanggan = Pelanggan::where('user_id', $userId)->first();
+
+        $idPelanggan = $pelanggan->id;
+        $data = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->get();
+        return view('user.tracking', compact('data'));
     }
 
     /**
@@ -61,4 +69,25 @@ class TrackingController extends Controller
     {
         //
     }
+    public function getStatusHistory($id)
+    {
+        $permintaan = PermintaanPengujian::findOrFail($id);
+
+        // Decode riwayat status
+        $history = $permintaan->status_history ? json_decode($permintaan->status_history, true) : [];
+
+        // Format tanggal
+        $formattedHistory = array_map(function ($item) {
+            return [
+                'status' => $item['status'],
+                'updated_at' => \Carbon\Carbon::parse($item['updated_at'])->format('d M Y H:i'),
+            ];
+        }, $history);
+
+        return response()->json([
+            'permintaan' => $permintaan,
+            'history' => $formattedHistory,
+        ]);
+    }
+
 }
