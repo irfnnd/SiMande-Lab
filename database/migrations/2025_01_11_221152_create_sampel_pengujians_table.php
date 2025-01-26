@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('kode_sampel')->unique();
             $table->foreignId('permintaan_id')->constrained('permintaan_pengujians')->onDelete('cascade');
             $table->string('parameter')->nullable();
+            $table->integer('jumlah_titik')->nullable();
+            $table->decimal('total_biaya', 10, 2)->nullable();
             $table->string('kelurahan')->nullable();
             $table->string('kecamatan')->nullable();
             $table->string('kota')->nullable();

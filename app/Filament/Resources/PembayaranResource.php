@@ -67,7 +67,7 @@ class PembayaranResource extends Resource
                 Tables\Columns\TextColumn::make('permintaan.pelanggan.nama_pelanggan')
                     ->label('Nama Pelanggan')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jumlah')
+                Tables\Columns\TextColumn::make('permintaan.total_biaya')
                     ->label('Jumlah Biaya')
                     ->sortable()
                     ->money('idr', true), // Format ke Rupiah
@@ -78,9 +78,6 @@ class PembayaranResource extends Resource
                         'Belum Bayar' => 'warning',
                         'Lunas' => 'success',
                     }),
-                Tables\Columns\TextColumn::make('tanggal_pembayaran')
-                    ->label('Tanggal Pembayaran')
-                    ->date(),
                 Tables\Columns\ImageColumn::make('bukti_pembayaran')
                     ->label('Bukti Pembayaran')
                     ->tooltip(fn($record) => 'Klik untuk memperbesar') // Tambahkan tooltip
@@ -95,8 +92,6 @@ class PembayaranResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('validasi')
                 ->label('Validasi')
                 ->icon('heroicon-o-check-circle')
@@ -105,7 +100,6 @@ class PembayaranResource extends Resource
                 ->action(function ($record) {
                     $record->update([
                         'status' => 'Lunas',
-                        'tanggal_pembayaran' => now(), // Set tanggal pembayaran ke waktu saat ini
                     ]);
                     $record->permintaan->update([
                         'status' => 'Bukti Pembayaran Valid',
@@ -114,7 +108,7 @@ class PembayaranResource extends Resource
                 ->visible(fn ($record) => $record->status === 'Belum Bayar' && $record->bukti_pembayaran), // Hanya tampil jika status belum lunas dan bukti tersedia,
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                //
             ]);
     }
 

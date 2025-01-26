@@ -29,7 +29,7 @@ class SertifikatPengujianResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('permintaan_id')
-                    ->label('Permintaan Pengujian')
+                    ->label('ID Permintaan Pengujian')
                     ->relationship('permintaanPengujian', 'id')
                     ->required(),
                 Forms\Components\TextInput::make('nomor_sertifikat')

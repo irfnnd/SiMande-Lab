@@ -22,9 +22,6 @@ class ViewSamplePelanggan extends ViewAction
                     ->description('Detail informasi umum terkait sampel pengujian.')
                     ->schema([
                         TextInput::make('kode_sampel')->label('Kode Sampel')->disabled(),
-                        TextInput::make('kelurahan')->label('Kelurahan')->disabled(),
-                        TextInput::make('kecamatan')->label('Kecamatan')->disabled(),
-                        TextInput::make('kota')->label('Kota')->disabled(),
                         DatePicker::make('tanggal_pengambilan')->label('Tanggal Pengambilan')->disabled(),
                         TimePicker::make('waktu_pengambilan')->label('Waktu Pengambilan')->disabled(),
                     ])->columns(3),

@@ -26,8 +26,32 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required(),
+                Forms\Components\TextInput::make('password')
+                ->label('Password')
+                    ->password()
+                    ->required()
+                    ->revealable()
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password()
+                    ->required(fn(string $operation): bool => $operation === 'create')
+                    ->revealable()
+                    ->label('Konfirmasi Password')
+                    ->dehydrated(false), // Tidak perlu menyimpan field ini ke database
+                Forms\Components\Select::make('role')
+                    ->required()
+                    ->options([
+                        'admin' => 'Admin',
+                        'petugas' => 'Petugas',
+                    ])
+                ]);
+
     }
 
     public static function table(Table $table): Table

@@ -100,6 +100,7 @@ class ParameterResource extends Resource
                 TextColumn::make('satuan')
                     ->label('Satuan')
                     ->sortable(),
+                    TextColumn::make('keterangan')->default('-'),
                 // TextColumn::make('metode_uji')
                 //     ->label('Metode Uji')
                 //     ->sortable(),

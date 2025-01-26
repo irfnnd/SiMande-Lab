@@ -38,8 +38,10 @@ class PermintaanPengujianResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pengambilan_sampel')
                     ->label('Pengambilan Sampel'),
-                Tables\Columns\TextColumn::make('parameter.parameter')
+                Tables\Columns\TextColumn::make('parameter')
                     ->label('Parameter'),
+                Tables\Columns\TextColumn::make('jumlah_titik'),
+                Tables\Columns\TextColumn::make('total_biaya'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -84,7 +86,10 @@ class PermintaanPengujianResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+
+            ->defaultSort('id', 'desc');
+
     }
 
     public static function getRelations(): array

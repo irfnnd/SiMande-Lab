@@ -34,7 +34,7 @@ class PelangganResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID Pelanggan'),
+                    ->label('ID Pelanggan')->searchable(),
                 Tables\Columns\TextColumn::make('nama_pelanggan')
                     ->label('Nama Pelanggan')->searchable(),
                 Tables\Columns\TextColumn::make('nama_perusahaan')
@@ -50,13 +50,12 @@ class PelangganResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -71,8 +70,6 @@ class PelangganResource extends Resource
     {
         return [
             'index' => Pages\ListPelanggans::route('/'),
-            'create' => Pages\CreatePelanggan::route('/create'),
-            'edit' => Pages\EditPelanggan::route('/{record}/edit'),
         ];
     }
 }

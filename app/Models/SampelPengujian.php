@@ -9,6 +9,9 @@ class SampelPengujian extends Model
     protected $fillable = [
         'kode_sampel',
         'permintaan_id',
+        'parameter',
+        'jumlah_titik',
+        'total_biaya',
         'kelurahan',
         'kecamatan',
         'kota',
@@ -66,13 +69,17 @@ class SampelPengujian extends Model
         static::saved(function ($sampelPengujian) {
             // Ambil relasi permintaanPengujian
             $permintaanPengujian = $sampelPengujian->permintaanPengujian;
+            // Update parameter di permintaanPengujian
+            PermintaanPengujian::where('id', $sampelPengujian->permintaan_id)
+                ->update(['parameter' => $sampelPengujian->parameter]);
 
-            if ($permintaanPengujian) {
-                // Perbarui parameter_id di permintaanPengujian
-                $permintaanPengujian->update([
-                    'parameter_id' => $sampelPengujian->parameter_id,
-                ]);
-            }
+            // Update total_biaya di permintaanPengujian
+            $totalBiaya = $sampelPengujian->total_biaya;
+            PermintaanPengujian::where('id', $sampelPengujian->permintaan_id)
+            ->update([
+                'jumlah_titik' => $sampelPengujian->jumlah_titik,
+                'total_biaya' => $totalBiaya
+            ]);
         });
     }
 

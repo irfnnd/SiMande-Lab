@@ -39,12 +39,10 @@ class PengambilanSampelResource extends Resource
                             ->prefix('SMPL')
                             ->dehydrated()
                             ->unique(ignoreRecord: true),
-                        Forms\Components\Select::make('permintaan_id')
+                        Forms\Components\TextInput::make('permintaan_id')
                             ->label('Id Permintaan Pengujian')
-                            ->relationship('permintaanPengujian', 'id')
                             ->disabled() // Relasi langsung ke permintaan pengujian
-                            ->searchable() // Tambahkan pencarian jika diperlukan
-                            ->required(),
+                            ->dehydrated(),
                         Forms\Components\DatePicker::make('tanggal_pengambilan')->label('Tanggal Pengambilan'),
                         Forms\Components\TimePicker::make('waktu_pengambilan')->label('Waktu Pengambilan'),
                         Forms\Components\TextInput::make('petugas_pengambilan')->label('Petugas Pengambilan'),
@@ -62,11 +60,46 @@ class PengambilanSampelResource extends Resource
 
                 Forms\Components\Section::make('Parameter Sampel')
                     ->schema([
-                        Forms\Components\Select::make('parameter_id')
+                        // Forms\Components\Select::make('parameter')
+                        //     ->label('Parameter Pengujian')
+                        //     ->options(fn() => \App\Models\Parameter::pluck('parameter', 'parameter'))
+                        //     ->preload()
+                        //     ->searchable(),
+                        Forms\Components\Select::make('parameter')
                             ->label('Parameter Pengujian')
-                            ->relationship('parameter', 'parameter')
+                            ->options(fn() => \App\Models\Parameter::pluck('parameter', 'parameter')) // Menggunakan parameter sebagai value
                             ->preload()
-                            ->searchable(),
+                            ->searchable()
+                            ->reactive() // Pastikan field ini reaktif
+                            ->afterStateUpdated(function ($state, $set) {
+                                // Ambil data tarif dari parameter yang dipilih
+                                $tarif = \App\Models\Parameter::where('parameter', $state)->first()?->tarif ?? 0;
+                                $set('tarif', $tarif); // Set nilai tarif berdasarkan parameter
+                            }),
+
+
+                        Forms\Components\TextInput::make('tarif')
+                            ->label('Tarif')
+                            ->disabled() // Tidak bisa diubah oleh pengguna
+                            ->numeric(), // Pastikan tipe numeric
+
+                        Forms\Components\TextInput::make('jumlah_titik')
+                            ->label('Jumlah Titik')
+                            ->numeric() // Memastikan input adalah angka
+                            ->reactive() // Membuatnya reaktif
+                            ->required()
+                            ->afterStateUpdated(function ($state, $get, $set) {
+                                // Hitung total biaya berdasarkan jumlah titik dan tarif
+                                $tarif = $get('tarif') ?? 0;
+                                $set('total_biaya', $state * $tarif);
+                            }),
+
+                        Forms\Components\TextInput::make('total_biaya')
+                            ->label('Total Biaya')
+                            ->disabled()
+                            ->dehydrated() // Tidak bisa diubah oleh pengguna
+                            ->numeric(),
+
                         Forms\Components\TextInput::make('acuan_metode')->label('Acuan Metode'),
                         Forms\Components\TextInput::make('teknik_pengambilan')->label('Teknik Pengambilan'),
                         Forms\Components\TextInput::make('wadah')->label('Wadah'),
@@ -135,5 +168,27 @@ class PengambilanSampelResource extends Resource
             'edit' => Pages\EditPengambilanSampel::route('/{record}/edit'),
         ];
     }
+
+
+    protected static function beforeUpdate($record, array $data): void
+    {
+        $request = request();
+
+        // Ambil data form dari request
+        $parameter = $request->input('parameter');
+        $jumlahTitik = $request->input('jumlah_titik');
+        $totalBiaya = $request->input('total_biaya');
+
+        // Lakukan pembaruan di tabel lain
+        \App\Models\PermintaanPengujian::where('id', $record->id)->update([
+            'parameter' => $parameter,
+            'jumlah_titik' => $jumlahTitik,
+            'total_biaya' => $totalBiaya,
+        ]);
+    }
+
+
+
+
 }
 

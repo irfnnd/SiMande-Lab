@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,10 +32,31 @@ class KepuasanPelangganResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('pelanggan.nama_pelanggan')->label('Nama Pelanggan')->searchable(),
+                TextColumn::make('jenis_kelamin'),
+                TextColumn::make('umur'),
+                TextColumn::make('pekerjaan'),
+                TextColumn::make('pendidikan')->label('Pendidikan Terakhir'),
+                TextColumn::make('rating')->label('Rating')
+                ->badge()
+                ->color(fn(string $state): string => match ($state) {
+                    '1' => 'warning',
+                    '2' => 'success',
+                    '3' => 'success',
+                    '4' => 'success',
+                    '5' => 'success',
+                }),
+                TextColumn::make('feedback')->label('Umpan Balik'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('rating')
+                    ->options([
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                        '5' => '5',
+                    ])
             ])
             ->actions([
                 //
@@ -57,8 +79,6 @@ class KepuasanPelangganResource extends Resource
     {
         return [
             'index' => Pages\ListKepuasanPelanggans::route('/'),
-            'create' => Pages\CreateKepuasanPelanggan::route('/create'),
-            'edit' => Pages\EditKepuasanPelanggan::route('/{record}/edit'),
         ];
     }
 }

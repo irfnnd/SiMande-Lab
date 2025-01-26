@@ -17,4 +17,9 @@ class KepuasanPelanggan extends Model
         'rating',
         'feedback',
     ];
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'pelanggan_id');
+    }
 }
