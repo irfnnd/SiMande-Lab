@@ -1,10 +1,22 @@
 @extends('layout')
 @section('content')
     <!-- Appointment Section -->
-    <div id="page-title" class="page-title-mini p-4" data-aos="fade-up" style="background-color: var(--accent-color)">
-        <div class="container clearfix">
-            <h4 class="text-white mb-1">Pembayaran</h4>
-            <p class="mb-0 text-white-50">Pengujian akan dilakukan setelah proses pembayaran selesai</p>
+    <div class="" data-aos-delay="200">
+        <!-- Teks Selamat Datang -->
+        <div class="position-relative" style="height: 200px; overflow: hidden;">
+            <!-- Hero Text -->
+            <div class=" hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+                style="bottom: 0;  z-index: 10; ">
+                <h2 class="fw-bold text-white text-shadow">Pembayaran</h2>
+                <p class="mb-0 text-shadow">Pengujian akan dilakukan setelah proses pembayaran selesai</p>
+            </div>
+
+            <div class="hero"
+                style="background-image: url('template-bootstrap/assets/img/labor.jpg');
+                  background-size: cover; background-position: center; height: 200px;">
+            </div>
+            <!-- Carousel -->
+
         </div>
     </div>
     <section id="appointment" class="appointment section" data-aos="fade-up">

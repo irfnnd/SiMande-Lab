@@ -1,10 +1,22 @@
 @extends('layout')
 
 @section('content')
-    <div id="page-title" class="page-title-mini p-4 " data-aos="fade-up" style="background-color: var(--accent-color)">
-        <div class="container clearfix">
-            <h4 class="text-white mb-1">Permohonan Uji</h4>
-            <p class="mb-0 text-white-50">Permohonan akan diterima oleh petugas penguji</p>
+    <div class="" data-aos-delay="200">
+        <!-- Teks Selamat Datang -->
+        <div class="position-relative" style="height: 200px; overflow: hidden;">
+            <!-- Hero Text -->
+            <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+                style="bottom: 0;  z-index: 10; ">
+                <h2 class="fw-bold text-white text-shadow">Permohonan Uji</h2>
+                <p class="mb-0 text-shadow">Permohonan akan diterima oleh petugas penguji</p>
+            </div>
+
+            <div class="hero"
+                style="background-image: url('template-bootstrap/assets/img/labor.jpg');
+                  background-size: cover; background-position: center; height: 500px;">
+            </div>
+            <!-- Carousel -->
+
         </div>
     </div>
 
@@ -232,19 +244,12 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus permohonan ini?')">Hapus</button>
                                                     </form> --}}
-                                                        @if ( $data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
-                                                            <form
-                                                                action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <a type="submit"
-                                                                    class="text-danger">Batalkan</a>
-                                                            </form>
-                                                        @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
-                                                            <a href="#">Setuju</a>
-                                                        @endif
 
-                                                        <a href=""><i class="fas fa-circle-info"></i>  Detail</a>
+                                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#detailModal"
+                                                            onclick="getPermintaanDetail('{{ $data->id }}')">
+                                                            Detail
+                                                        </button>
 
                                                     </td>
                                                 </tr>
@@ -262,82 +267,237 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <script>
-        function toggleCards() {
-            const pelangganRadio = document.getElementById("pelanggan");
-            const informasiSampelCard = document.getElementById("informasiSampelCard");
-            const parameterPengujianCard = document.getElementById("parameterPengujianCard");
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Detail Permintaan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Data akan diisi secara dinamis -->
+                        <div class="container">
+                            <div id="modal-content">
+                                <p>Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @if ($data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
+                            <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Dibatalkan Pelanggan">
+                                <button type="submit" class="text-danger">Batalkan</button>
+                            </form>
+                        @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
+                            <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Disetujui Pelanggan">
+                                <button type="submit" class="btn btn-primary">Setuju</button>
+                            </form>
+                        @endif
 
-            // Elemen input yang perlu dimodifikasi
-            const informasiInputs = informasiSampelCard.querySelectorAll("input, select");
-            const parameterInputs = parameterPengujianCard.querySelectorAll("input, select");
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            if (pelangganRadio.checked) {
-                // Tampilkan card dan aktifkan input
-                informasiSampelCard.style.display = "block";
-                parameterPengujianCard.style.display = "block";
-                informasiInputs.forEach(input => input.removeAttribute("disabled"));
-                parameterInputs.forEach(input => input.removeAttribute("disabled"));
-            } else {
-                // Sembunyikan card dan nonaktifkan input
-                informasiSampelCard.style.display = "none";
-                parameterPengujianCard.style.display = "none";
-                informasiInputs.forEach(input => input.setAttribute("disabled", true));
-                parameterInputs.forEach(input => input.setAttribute("disabled", true));
+        </section>
+
+        <script>
+            function toggleCards() {
+                const pelangganRadio = document.getElementById("pelanggan");
+                const informasiSampelCard = document.getElementById("informasiSampelCard");
+                const parameterPengujianCard = document.getElementById("parameterPengujianCard");
+
+                // Elemen input yang perlu dimodifikasi
+                const informasiInputs = informasiSampelCard.querySelectorAll("input, select");
+                const parameterInputs = parameterPengujianCard.querySelectorAll("input, select");
+
+                if (pelangganRadio.checked) {
+                    // Tampilkan card dan aktifkan input
+                    informasiSampelCard.style.display = "block";
+                    parameterPengujianCard.style.display = "block";
+                    informasiInputs.forEach(input => input.removeAttribute("disabled"));
+                    parameterInputs.forEach(input => input.removeAttribute("disabled"));
+                } else {
+                    // Sembunyikan card dan nonaktifkan input
+                    informasiSampelCard.style.display = "none";
+                    parameterPengujianCard.style.display = "none";
+                    informasiInputs.forEach(input => input.setAttribute("disabled", true));
+                    parameterInputs.forEach(input => input.setAttribute("disabled", true));
+                }
             }
-        }
 
-        // Sembunyikan card saat halaman dimuat
-        document.addEventListener("DOMContentLoaded", () => {
-            toggleCards();
-        });
-    </script>
-    <script>
-        document.getElementById('parameter_id').addEventListener('change', function() {
-            const parameterId = this.value;
+            // Sembunyikan card saat halaman dimuat
+            document.addEventListener("DOMContentLoaded", () => {
+                toggleCards();
+            });
+        </script>
+        <script>
+            document.getElementById('parameter_id').addEventListener('change', function() {
+                const parameterId = this.value;
 
-            if (parameterId) {
-                fetch(`/get-parameter/${parameterId}`)
+                if (parameterId) {
+                    fetch(`/get-parameter/${parameterId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.kode_parameter) {
+                                document.getElementById('kode_parameter').value = data.kode_parameter;
+                                document.getElementById('satuan').value = data.satuan;
+                                document.getElementById('wadah').value = data.satuan;
+                                document.getElementById('volume_sampel').value = data.volume_sampel;
+                                document.getElementById('metode_uji').value = data.metode_uji;
+                                document.getElementById('tarif').value = data.tarif;
+                                document.getElementById('parameter').value = data.parameter;
+                            } else {
+                                alert('Parameter not found');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching parameter data:', error);
+                        });
+                } else {
+                    // Kosongkan input jika tidak ada parameter yang dipilih
+                    document.getElementById('kode_parameter').value = '';
+                    document.getElementById('metode_uji').value = '';
+                    document.getElementById('wadah').value = '';
+                    document.getElementById('volume_sampel').value = '';
+                    document.getElementById('satuan').value = '';
+                    document.getElementById('tarif').value = '';
+                    document.getElementById('parameter').value = '';
+                }
+            });
+        </script>
+
+        <script>
+            document.getElementById('jumlah_titik').addEventListener('input', function() {
+                const tarif = parseFloat(document.getElementById('tarif').value) || 0;
+                const jumlahTitik = parseFloat(this.value) || 1;
+                const jumlahBiaya = tarif * jumlahTitik;
+                document.getElementById('jumlah_biaya').value = jumlahBiaya;
+                document.getElementById('jumlah_biaya_display').textContent =
+                    `Rp. ${jumlahBiaya.toLocaleString('id-ID')}`;
+            });
+        </script>
+        <script>
+            function getPermintaanDetail(permintaanId) {
+                // Gunakan fetch untuk mendapatkan data dari backend
+                fetch(`/permohonan-uji/${permintaanId}`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data.kode_parameter) {
-                            document.getElementById('kode_parameter').value = data.kode_parameter;
-                            document.getElementById('satuan').value = data.satuan;
-                            document.getElementById('wadah').value = data.satuan;
-                            document.getElementById('volume_sampel').value = data.volume_sampel;
-                            document.getElementById('metode_uji').value = data.metode_uji;
-                            document.getElementById('tarif').value = data.tarif;
-                            document.getElementById('parameter').value = data.parameter;
-                        } else {
-                            alert('Parameter not found');
+                        const permintaan = data; // Data dari model Permintaan
+                        const sampel = permintaan.sampel; // Data dari model Sampel (relasi)
+                        let modalContent = "";
+
+                        // Jika pengambilan sampel dilakukan oleh petugas
+                        if (data.pengambilan_sampel === "Petugas") {
+                            modalContent = `
+                        <div class="card mb-3">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Detail Permintaan Pengujian</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderess table-hover">
+                                    <tr><th>ID Permintaan</th><td>${data.id}</td></tr>
+                                    <tr><th>Nama Pelanggan</th><td>${data.pelanggan_id}</td></tr>
+                                    <tr><th>Pengambilan Sampel</th><td>${data.pengambilan_sampel}</td></tr>
+                                    <tr><th>Nama Petugas</th><td>${data.petugas_pengambilan}</td></tr>
+                                    <tr><th>Jumlah Titik</th><td>${data.jumlah_titik}</td></tr>
+                                    <tr><th>Total Biaya</th><td>${data.total_biaya}</td></tr>
+                                    <tr><th>Status</th><td>${data.status}</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Sampel Pengujian oleh Petugas</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderess table-hover">
+                                    <tr><th>ID Sampel</th><td>${sampel.id}</td></tr>
+                                    <tr><th>Kode Sampel</th><td>${sampel.kode_sampel}</td></tr>
+                                    <tr><th>Permintaan ID</th><td>${sampel.permintaan_id}</td></tr>
+                                    <tr><th>Parameter</th><td>${sampel.parameter}</td></tr>
+                                    <tr><th>Jumlah Titik</th><td>${sampel.jumlah_titik}</td></tr>
+                                    <tr><th>Total Biaya</th><td>${sampel.total_biaya}</td></tr>
+                                    <tr><th>Kelurahan</th><td>${sampel.kelurahan}</td></tr>
+                                    <tr><th>Kecamatan</th><td>${sampel.kecamatan}</td></tr>
+                                    <tr><th>Kota</th><td>${sampel.kota}</td></tr>
+                                    <tr><th>Tanggal Pengambilan</th><td>${sampel.tanggal_pengambilan}</td></tr>
+                                    <tr><th>Waktu Pengambilan</th><td>${sampel.waktu_pengambilan}</td></tr>
+                                    <tr><th>Petugas Pengambilan</th><td>${sampel.petugas_pengambilan}</td></tr>
+                                    <tr><th>Acuan Metode</th><td>${sampel.acuan_metode}</td></tr>
+                                    <tr><th>Teknik Pengambilan</th><td>${sampel.teknik_pengambilan}</td></tr>
+                                    <tr><th>Wadah</th><td>${sampel.wadah}</td></tr>
+                                    <tr><th>Volume Sampel</th><td>${sampel.volume_sampel}</td></tr>
+                                    <tr><th>pH</th><td>${sampel.ph}</td></tr>
+                                    <tr><th>DHL</th><td>${sampel.dhl}</td></tr>
+                                    <tr><th>Suhu Air</th><td>${sampel.suhu_air}</td></tr>
+                                    <tr><th>DO</th><td>${sampel.do}</td></tr>
+                                    <tr><th>Warna</th><td>${sampel.warna}</td></tr>
+                                    <tr><th>Sanity</th><td>${sampel.sanity}</td></tr>
+                                    <tr><th>YDS</th><td>${sampel.yds}</td></tr>
+                                    <tr><th>Cuaca</th><td>${sampel.cuaca}</td></tr>
+                                    <tr><th>Musim</th><td>${sampel.musim}</td></tr>
+                                    <tr><th>Bau</th><td>${sampel.bau}</td></tr>
+                                    <tr><th>Lab Minyak</th><td>${sampel.lab_minyak}</td></tr>
+                                    <tr><th>Suhu Udara</th><td>${sampel.suhu_udara}</td></tr>
+                                    <tr><th>Kuat Arus</th><td>${sampel.kuat_arus}</td></tr>
+                                    <tr><th>Debit Air</th><td>${sampel.debit_air}</td></tr>
+                                    <tr><th>Titik Koordinat</th><td>${sampel.titik_koordinat}</td></tr>
+                                    <tr><th>Alasan Sampel Tidak Diambil</th><td>${sampel.alasan_sampel_tidak_diambil}</td></tr>
+                                    <tr><th>Rincian Kondisi</th><td>${sampel.rincian_kondisi}</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    `;
                         }
+                        // Jika pengambilan sampel dilakukan oleh pelanggan
+                        else if (data.pengambilan_sampel === "Pelanggan") {
+                            modalContent = `
+                        <div class="card mb-3">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Detail Pemintaan Pengujian</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderess table-hover">
+                                    <tr><th>ID Permintaan</th><td>${data.id}</td></tr>
+                                    <tr><th>Nama Pelanggan</th><td>${data.pelanggan_id}</td></tr>
+                                    <tr><th>Pengambilan Sampel</th><td>${data.pengambilan_sampel}</td></tr>
+                                    <tr><th>Nama Petugas</th><td>${data.petugas_pengambilan}</td></tr>
+                                    <tr><th>Jumlah Titik</th><td>${data.jumlah_titik}</td></tr>
+                                    <tr><th>Total Biaya</th><td>${data.total_biaya}</td></tr>
+                                    <tr><th>Status</th><td>${data.status}</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Parameter Pengujian oleh Pelanggan</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderess table-hover">
+                                    <tr><th>ID Sampel</th><td>${sampel.id}</td></tr>
+                                    <tr><th>Kode Sampel</th><td>${sampel.kode_sampel}</td></tr>
+                                    <tr><th>Tanggal Pengambilan</th><td>${sampel.tanggal_pengambilan}</td></tr>
+                                    <tr><th>Waktu Pengambilan</th><td>${sampel.waktu_pengambilan}</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                        }
+
+                        // Masukkan konten tabel ke dalam modal
+                        document.getElementById('modal-content').innerHTML = modalContent;
                     })
                     .catch(error => {
-                        console.error('Error fetching parameter data:', error);
+                        console.error("Error fetching data:", error);
+                        document.getElementById('modal-content').innerHTML =
+                            `<p class="text-danger">Gagal memuat data.</p>`;
                     });
-            } else {
-                // Kosongkan input jika tidak ada parameter yang dipilih
-                document.getElementById('kode_parameter').value = '';
-                document.getElementById('metode_uji').value = '';
-                document.getElementById('wadah').value = '';
-                document.getElementById('volume_sampel').value = '';
-                document.getElementById('satuan').value = '';
-                document.getElementById('tarif').value = '';
-                document.getElementById('parameter').value = '';
             }
-        });
-    </script>
-
-    <script>
-        document.getElementById('jumlah_titik').addEventListener('input', function() {
-            const tarif = parseFloat(document.getElementById('tarif').value) || 0;
-            const jumlahTitik = parseFloat(this.value) || 1;
-            const jumlahBiaya = tarif * jumlahTitik;
-            document.getElementById('jumlah_biaya').value = jumlahBiaya;
-            document.getElementById('jumlah_biaya_display').textContent =
-                `Rp. ${jumlahBiaya.toLocaleString('id-ID')}`;
-        });
-    </script>
-@endsection
+        </script>
+    @endsection

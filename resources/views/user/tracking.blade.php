@@ -1,12 +1,23 @@
 @extends('layout')
 @section('content')
-    <!-- Appointment Section -->
-    <div id="page-title" class="page-title-mini p-4" data-aos="fade-up" style="background-color: var(--accent-color)">
-        <div class="container clearfix">
-            <h4 class="text-white mb-1">Tracking</h4>
-            <p class="mb-0 text-white-50">Lacak proses pengujian</p>
+<div class="" data-aos-delay="200">
+    <!-- Teks Selamat Datang -->
+    <div class="position-relative" style="height: 200px; overflow: hidden;">
+        <!-- Hero Text -->
+        <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+            style="bottom: 0;  z-index: 10; ">
+            <h2 class="fw-bold text-white text-shadow">Pelacakan Proses Pengujian</h2>
+            <p class="mb-0 text-shadow">Proses yang dilakukan akan diperbarui secara real-time</p>
         </div>
+
+        <div class="hero"
+            style="background-image: url('template-bootstrap/assets/img/labor.jpg');
+              background-size: cover; background-position: center; height: 500px;">
+        </div>
+        <!-- Carousel -->
+
     </div>
+</div>
     <section id="appointment" data-aos="fade-up" class="appointment section">
         <div class="container d-flex justify-content-center align-items-center pt-5 pb-5">
             <div class="p-3 rounded" style="width: 100%; max-width: 100vx; background-color: #ffffff;">
@@ -20,7 +31,7 @@
                         <div class="card shadow-sm border-0 mb-3">
                             <div class="card-body">
                                 @forelse ($data as $item)
-                                <div class="mb-2">
+                                <div class="mb-4">
                                     <h5 class="card-title mt-3"><strong>ID Permintaan Pengujian:</strong>
                                         {{ $item->id }}</h5>
                                     <p class="d-inline me-3"><strong>Parameter Uji:</strong> <span

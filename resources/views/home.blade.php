@@ -8,7 +8,7 @@
     <div class="position-relative" style="height: 500px; overflow: hidden;">
       <!-- Hero Text -->
       <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
-           style="bottom: 0; background: rgba(0, 0, 0, 0.3); z-index: 10;">
+           style="bottom: 0; background: rgba(0, 0, 0, 0.2); z-index: 10;">
         <h1 class="fw-bold text-white text-shadow">Selamat Datang Di SiMande-Lab</h1>
         <p class="mb-0 text-shadow">Temukan informasi dan layanan terbaik yang kami tawarkan untuk memenuhi kebutuhan Anda</p>
       </div>
@@ -19,19 +19,19 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="hero"
-                 style="background-image: url('https://2.bp.blogspot.com/-gKDim8_9Mas/UQeBbWsyhbI/AAAAAAAAC4Y/YaDeuYab5U0/s1600/3.JPG');
+                 style="background-image: url('template-bootstrap/assets/img/rumah-gadang.png');
                         background-size: cover; background-position: center; height: 400px;">
             </div>
           </div>
           <div class="carousel-item">
             <div class="hero"
-                 style="background-image: url('https://www.hseprime.com/wp-content/uploads/2018/09/lab-pic-800x480-1.jpeg');
+                 style="background-image: url('template-bootstrap/assets/img/labor.jpg');
                         background-size: cover; background-position: center; height: 400px;">
             </div>
           </div>
           <div class="carousel-item">
             <div class="hero"
-                 style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeIyF-j6RaJCxNfVDMKas56G6DFG3smSGetQ&s');
+                 style="background-image: url('template-bootstrap/assets/img/labor2.jpg');
                         background-size: cover; background-position: center; height: 400px;">
             </div>
           </div>

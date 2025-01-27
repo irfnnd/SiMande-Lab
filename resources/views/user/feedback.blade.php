@@ -1,9 +1,21 @@
 @extends('layout')
 @section('content')
-<div id="page-title" class="page-title-mini p-4" data-aos="fade-up" style="background-color: var(--accent-color)">
-    <div class="container clearfix">
-        <h4 class="text-white mb-1">Umpan Balik Pengguna</h4>
-        <p class="mb-0 text-white-50">Terima kasih telah menggunakan layanan kami</p>
+<div class="" data-aos-delay="200">
+    <!-- Teks Selamat Datang -->
+    <div class="position-relative" style="height: 200px; overflow: hidden;">
+        <!-- Hero Text -->
+        <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+            style="bottom: 0;  z-index: 10; ">
+            <h2 class="fw-bold text-white text-shadow">Umpan Balik Pengguna</h2>
+            <p class="mb-0 text-shadow">Terima kasih telah menggunakan layanan kami</p>
+        </div>
+
+        <div class="hero"
+            style="background-image: url('template-bootstrap/assets/img/labor.jpg');
+              background-size: cover; background-position: center; height: 500px;">
+        </div>
+        <!-- Carousel -->
+
     </div>
 </div>
 <section class="content mt-4" data-aos="fade-up">
@@ -82,11 +94,11 @@
                         <div class="p-3 mb-4 rounded">
                             <label class="fw-bold">Bagaimana pendapat saudara tentang pelayanan yang diberikan?</label>
                             <div class="d-flex gap-4 mt-2 flex-wrap">
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="1" class="form-check-input"> Sangat Tidak Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="2" class="form-check-input"> Tidak Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="3" class="form-check-input"> Cukup Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="4" class="form-check-input"> Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="5" class="form-check-input"> Sangat Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Sangat Tidak Puas" class="form-check-input"> Sangat Tidak Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Tidak Puas" class="form-check-input"> Tidak Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Cukup Puas" class="form-check-input"> Cukup Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Puas" class="form-check-input"> Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Sangat Puas" class="form-check-input"> Sangat Puas</label>
                             </div>
                         </div>
 

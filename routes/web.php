@@ -14,6 +14,9 @@ use App\Http\Controllers\SertifikatController;
 Route::get('/', function () {
     return view('home');
 });
+Route::get('/home', function () {
+    return view('home');
+});
 
 Auth::routes(['verify' => true]);
 Route::get('logout', function () {
@@ -21,7 +24,6 @@ Route::get('logout', function () {
     return redirect('login');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('pembayaran', PembayaranController::class);
     Route::post('/pembayaran/upload-bukti', [PembayaranController::class, 'store'])->name('bukti.upload');

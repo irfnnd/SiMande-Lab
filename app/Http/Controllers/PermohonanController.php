@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Parameter;
+use App\Models\Pembayaran;
 use App\Models\PermintaanPengujian;
 use App\Models\SampelPengujian;
 use Illuminate\Http\Request;
@@ -63,6 +64,11 @@ class PermohonanController extends Controller
             'waktu_pengambilan' => $request->waktu_pengambilan,
         ]);
 
+        Pembayaran::create([
+            'permintaan_id' => $idPermintaan,
+            'pelanggan_id' => $request->id_pelanggan,
+        ]);
+
         // Redirect atau tampilkan pesan sukses
         session()->flash('success', 'Permohonan Pengujian berhasil dibuat.');
         return redirect()->back();
@@ -75,7 +81,8 @@ class PermohonanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $permintaan = PermintaanPengujian::with('sampel')->findOrFail($id);
+        return response()->json($permintaan);
     }
 
     /**
@@ -127,7 +134,7 @@ class PermohonanController extends Controller
         //     'status' => 'required|string',
         // ]);
 
-        $data = 'Menunggu Pembayaran';
+        $data = $request->status;
 
         $permintaan = PermintaanPengujian::findOrFail($id);
 

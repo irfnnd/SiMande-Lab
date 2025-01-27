@@ -71,10 +71,12 @@ class SampelPengujian extends Model
             $permintaanPengujian = $sampelPengujian->permintaanPengujian;
             // Update parameter di permintaanPengujian
             PermintaanPengujian::where('id', $sampelPengujian->permintaan_id)
-                ->update(['parameter' => $sampelPengujian->parameter]);
+                ->update([
+                    'parameter' => $sampelPengujian->parameter
+                ]);
 
             // Update total_biaya di permintaanPengujian
-            $totalBiaya = $sampelPengujian->total_biaya;
+             $totalBiaya = $sampelPengujian->total_biaya;
             PermintaanPengujian::where('id', $sampelPengujian->permintaan_id)
             ->update([
                 'jumlah_titik' => $sampelPengujian->jumlah_titik,

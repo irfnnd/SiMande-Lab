@@ -1,11 +1,22 @@
 @extends('layout')
 
 @section('content')
+<div class="" data-aos-delay="200">
+    <!-- Teks Selamat Datang -->
+    <div class="position-relative" style="height: 200px; overflow: hidden;">
+        <!-- Hero Text -->
+        <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+            style="bottom: 0;  z-index: 10; ">
+            <h2 class="fw-bold text-white text-shadow">Sertifikat Hasil Pengujian</h2>
+            <p class="mb-0 text-shadow">Apabila pengujian telah selesai, sertifikat dapat diCetak oleh pengguna</p>
+        </div>
 
-<div id="page-title" class="page-title-mini p-4" data-aos="fade-up" style="background-color: var(--accent-color)">
-    <div class="container clearfix ">
-        <h4 class="text-white mb-1">Sertifikat Hasil Pengujian</h4>
-        <p class="mb-0 text-white-50">Apabila pengujian telah selesai, sertifikat dapat diCetak oleh pengguna</p>
+        <div class="hero"
+            style="background-image: url('template-bootstrap/assets/img/labor.jpg');
+              background-size: cover; background-position: center; height: 500px;">
+        </div>
+        <!-- Carousel -->
+
     </div>
 </div>
 
