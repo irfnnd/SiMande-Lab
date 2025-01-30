@@ -284,18 +284,22 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        @if ($data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
-                            <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="status" value="Dibatalkan Pelanggan">
-                                <button type="submit" class="text-danger">Batalkan</button>
-                            </form>
-                        @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
-                            <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="status" value="Disetujui Pelanggan">
-                                <button type="submit" class="btn btn-primary">Setuju</button>
-                            </form>
+                        @if (!empty($data))
+                            @if ($data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
+                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
+                                    method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Dibatalkan Pelanggan">
+                                    <button type="submit" class="text-danger">Batalkan</button>
+                                </form>
+                            @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
+                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
+                                    method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Disetujui Pelanggan">
+                                    <button type="submit" class="btn btn-primary">Setuju</button>
+                                </form>
+                            @endif
                         @endif
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

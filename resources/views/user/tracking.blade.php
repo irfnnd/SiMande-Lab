@@ -102,7 +102,10 @@
                         <div class="timeline">
                             <!-- Timeline akan diisi dengan data dari AJAX -->
                         </div>
-                        <p class="mt-4">Status Saat Ini: <span class="badge bg-success" id="currentStatus"></span></p>
+                        <div class="mt-4">
+                             <p>Status Saat Ini:</p>
+                             <p class="badge badge-lg bg-success" id="currentStatus"></p>
+                        </div>
                     </div>
                 </div>
             </div>

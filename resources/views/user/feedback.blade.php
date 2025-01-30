@@ -94,11 +94,11 @@
                         <div class="p-3 mb-4 rounded">
                             <label class="fw-bold">Bagaimana pendapat saudara tentang pelayanan yang diberikan?</label>
                             <div class="d-flex gap-4 mt-2 flex-wrap">
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Sangat Tidak Puas" class="form-check-input"> Sangat Tidak Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Tidak Puas" class="form-check-input"> Tidak Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Cukup Puas" class="form-check-input"> Cukup Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Puas" class="form-check-input"> Puas</label>
-                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="Sangat Puas" class="form-check-input"> Sangat Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="1" class="form-check-input"> Sangat Tidak Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="2" class="form-check-input"> Tidak Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="3" class="form-check-input"> Cukup Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="4" class="form-check-input"> Puas</label>
+                                <label class="d-flex align-items-center gap-2"><input type="radio" name="rating" value="5" class="form-check-input"> Sangat Puas</label>
                             </div>
                         </div>
 

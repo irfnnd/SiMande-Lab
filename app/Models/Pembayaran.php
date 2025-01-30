@@ -8,7 +8,8 @@ class Pembayaran extends Model
 {
     protected $fillable = [
         'permintaan_id',
-        'jumlah',
+        'pelanggan_id',
+        'bukti_pembayaran',
         'status',
         'tanggal_pembayaran',
         'bukti_pembayaran',

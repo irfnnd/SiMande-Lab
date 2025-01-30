@@ -46,23 +46,23 @@
 <body>
     <div class="auth-box">
         <a href="/" class="auth-logo mb-4 d-flex justify-content-center">
-            <img src="logo.png" alt="Logo">
+            <img src="{{ asset('logo.png') }}" alt="Logo">
         </a>
 
-        <h4 class="mb-4">Verify Your Email Address</h4>
+        <h4 class="mb-4">Verifikasi alamat email anda</h4>
 
         @if (session('resent'))
             <div class="alert alert-success" role="alert">
-                A fresh verification link has been sent to your email address.
+                Tautan verifikasi baru telah dikirim.
             </div>
         @endif
 
-        <p>Before proceeding, please check your email for a verification link.</p>
-        <p>If you did not receive the email, click the button below to request another link.</p>
+        <p>Sebelum melanjutkan, periksa email Anda untuk tautan verifikasi.</p>
+        <p>Jika Anda belum menerima email klik di sini untuk mengirim ulang.</p>
 
         <form method="POST" action="{{ route('verification.resend') }}">
             @csrf
-            <button type="submit" class="btn btn-primary">Request Verification Link</button>
+            <button type="submit" class="btn btn-primary">Kirim Ulang</button>
         </form>
     </div>
 

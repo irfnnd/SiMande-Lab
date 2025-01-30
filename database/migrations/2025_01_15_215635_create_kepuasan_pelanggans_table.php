@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('umur')->comment('Umur pelanggan');
             $table->string('pendidikan')->comment('Pendidikan terakhir pelanggan');
             $table->string('pekerjaan')->comment('Pendidikan terakhir pelanggan');
-            $table->string('rating')->comment('Rating kepuasan'); // Rating antara 1 sampai 5
+            $table->unsignedTinyInteger('rating')->comment('Rating kepuasan 1-5');  // Rating antara 1 sampai 5
             $table->text('feedback')->nullable(); // Umpan balik atau komentar
             $table->timestamps();
         });

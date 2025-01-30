@@ -45,10 +45,10 @@
 <body>
     <div class="auth-box">
         <a href="/" class="auth-logo mb-4 d-flex justify-content-center">
-            <img src="assets/images/logo-dark.svg" alt="Logo">
+            <img src={{ asset('logo.png') }} alt="Logo">
         </a>
 
-        <h4 class="mb-4">Reset Password</h4>
+        <h4 class="mb-4">Reset Kata Sandi</h4>
 
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
@@ -56,7 +56,7 @@
             <input type="hidden" name="token" value="{{ $token }}">
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                <label for="email" class="form-label">Alamat Email <span class="text-danger">*</span></label>
                 <input
                     id="email"
                     type="email"
@@ -75,7 +75,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">New Password <span class="text-danger">*</span></label>
+                <label for="password" class="form-label">Kata Sandi Baru <span class="text-danger">*</span></label>
                 <input
                     id="password"
                     type="password"
@@ -92,7 +92,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="password-confirm" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                <label for="password-confirm" class="form-label">Konfirmasi Kata Sandi <span class="text-danger">*</span></label>
                 <input
                     id="password-confirm"
                     type="password"
@@ -104,7 +104,7 @@
             </div>
 
             <div class="mb-3 d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Reset Password</button>
+                <button type="submit" class="btn btn-primary">Reset Kata Sandi</button>
             </div>
         </form>
     </div>

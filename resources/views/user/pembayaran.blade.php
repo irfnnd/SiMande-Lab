@@ -38,8 +38,12 @@
                                         {{ number_format($item->permintaan->total_biaya, 0, ',', '.') }}</p>
                                     <p class="d-inline me-3"><strong>Status:</strong> <span
                                             class="text-success">{{ $item->status }}</span></p>
-                                    <p class="d-inline me-3"><strong>Bukti Pembayaran:</strong> <a
-                                            href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a></p>
+                                    @if($item->bukti_pembayaran == null)
+                                        <p class="d-inline me-3"><strong>Bukti Pembayaran: </strong><span class="text-danger"> Bukti pembayaran belum diupload</span></p>
+                                    @else
+                                        <p class="d-inline me-3"><strong>Bukti Pembayaran:</strong> <a
+                                                href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a></p>
+                                    @endif
                                     <p class="d-inline me-3"><strong>Tagihan:</strong> <a
                                             href="{{ route('tagihan.unduh', ['id' => $item->id]) }}"
                                             class="text-primary">Cetak</a></p>

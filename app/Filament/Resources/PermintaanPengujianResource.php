@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PermintaanPengujianResource\Pages;
 use App\Filament\Resources\PermintaanPengujianResource\RelationManagers;
 use App\Models\PermintaanPengujian;
+use Filament\Tables\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +15,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PermintaanPengujianResource\Actions\PermintaanPengujianViewAction;
 use App\Filament\Resources\PermintaanPengujianResource\Actions\ViewSamplePelanggan;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+
 class PermintaanPengujianResource extends Resource
 {
     protected static ?string $model = PermintaanPengujian::class;
@@ -39,9 +43,10 @@ class PermintaanPengujianResource extends Resource
                 Tables\Columns\TextColumn::make('pengambilan_sampel')
                     ->label('Pengambilan Sampel'),
                 Tables\Columns\TextColumn::make('parameter')
-                    ->label('Parameter'),
-                Tables\Columns\TextColumn::make('jumlah_titik'),
-                Tables\Columns\TextColumn::make('total_biaya'),
+                    ->label('Parameter')
+                    ->default('Belum ditentukan'),
+                Tables\Columns\TextColumn::make('jumlah_titik')->default('Belum ditentukan'),
+                Tables\Columns\TextColumn::make('total_biaya')->default('Belum ditentukan'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -73,12 +78,41 @@ class PermintaanPengujianResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                PermintaanPengujianViewAction::make('sampel_petugas')->label('Sampel Pengujian')->icon('heroicon-s-clipboard-document-list')
+                Tables\Actions\Action::make('editStatus')
+                ->label('Edit Status')
+                ->icon('heroicon-o-pencil')
+                ->form([
+                    Forms\Components\TextInput::make('status'),
+                ])
+                ->action(function (Model $record, array $data): void {
+                    // Ambil status baru
+                    $newStatus = $data['status'];
+
+                    // Simpan status lama ke dalam riwayat
+                    $history = $record->status_history ? json_decode($record->status_history, true) : [];
+                    $history[] = [
+                        'status' => $record->status, // Status sebelumnya
+                        'updated_at' => now()->toDateTimeString(), // Waktu perubahan
+                    ];
+
+                    // Update status dan riwayat
+                    $record->update([
+                        'status' => $newStatus,
+                        'status_history' => json_encode($history),
+                    ]);
+                })
+                ->modalHeading('Ubah Status')
+                ->modalButton('Simpan')
+                ->successNotificationTitle('Status berhasil diperbarui')
+                ->visible(function (User $user) {
+                    return $user->role == 'petugas';
+                }),
+
+                PermintaanPengujianViewAction::make('sampel_petugas')->label('Info Sampel')->icon('heroicon-s-clipboard-document-list')
                 ->visible(function ($record) {
                     return $record->pengambilan_sampel === 'Petugas';
                 }),
-                ViewSamplePelanggan::make('sampel_pelanggan')->label('Sampel Pengujian')->icon('heroicon-s-clipboard-document-list')
+                ViewSamplePelanggan::make('sampel_pelanggan')->label('Info Sampel')->icon('heroicon-s-clipboard-document-list')
                 ->visible(function ($record) {
                     return $record->pengambilan_sampel === 'Pelanggan';
                 }),
@@ -104,7 +138,6 @@ class PermintaanPengujianResource extends Resource
         return [
             'index' => Pages\ListPermintaanPengujians::route('/'),
             'create' => Pages\CreatePermintaanPengujian::route('/create'),
-            'edit' => Pages\EditPermintaanPengujian::route('/{record}/edit'),
         ];
     }
 }

@@ -18,6 +18,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup;
+use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\RecentActivities;
+use App\Filament\Widgets\PermohonanUjiChart;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -37,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             // ->brandLogo(asset('logo.png'))
             ->brandLogoHeight('2.5rem')
             // ->brandName('SiMande-Lab')
-            ->brandLogo(asset('logo.png') )
+            ->brandLogo(asset('logo.png'))
             ->login()
             ->colors([
                 'danger' => Color::Rose,
@@ -54,8 +57,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
+                StatsOverview::class,
+                RecentActivities::class,
+                PermohonanUjiChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -69,6 +69,7 @@ class PembayaranResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('permintaan.total_biaya')
                     ->label('Jumlah Biaya')
+                    ->default('Belum ditentukan')
                     ->sortable()
                     ->money('idr', true), // Format ke Rupiah
                 Tables\Columns\TextColumn::make('status')
@@ -78,11 +79,17 @@ class PembayaranResource extends Resource
                         'Belum Bayar' => 'warning',
                         'Lunas' => 'success',
                     }),
-                Tables\Columns\ImageColumn::make('bukti_pembayaran')
+                    Tables\Columns\ImageColumn::make('bukti_pembayaran')
                     ->label('Bukti Pembayaran')
-                    ->tooltip(fn($record) => 'Klik untuk memperbesar') // Tambahkan tooltip
-                    ->url(fn($record) => asset('storage/' . $record->bukti_pembayaran)) // Link ke gambar asli
-                    ->openUrlInNewTab(),
+                    ->tooltip(fn($record) => 'Klik untuk memperbesar')
+                    ->url(fn($record) => $record->bukti_pembayaran ? asset('storage/' . $record->bukti_pembayaran) : null)
+                    ->openUrlInNewTab()
+                    ->hidden(fn($record) => empty($record->bukti_pembayaran)), // Sembunyikan jika kosong
+
+                Tables\Columns\TextColumn::make('bukti_pembayaran_placeholder')
+                    ->label('Bukti Pembayaran')
+                    ->default('Bukti belum diupload')
+                    ->hidden(fn($record) => !empty($record->bukti_pembayaran)),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -93,19 +100,19 @@ class PembayaranResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('validasi')
-                ->label('Validasi')
-                ->icon('heroicon-o-check-circle')
-                ->color('success')
-                ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
-                ->action(function ($record) {
-                    $record->update([
-                        'status' => 'Lunas',
-                    ]);
-                    $record->permintaan->update([
-                        'status' => 'Bukti Pembayaran Valid',
-                    ]);
-                })
-                ->visible(fn ($record) => $record->status === 'Belum Bayar' && $record->bukti_pembayaran), // Hanya tampil jika status belum lunas dan bukti tersedia,
+                    ->label('Validasi')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
+                    ->action(function ($record) {
+                        $record->update([
+                            'status' => 'Lunas',
+                        ]);
+                        $record->permintaan->update([
+                            'status' => 'Bukti Pembayaran Valid',
+                        ]);
+                    })
+                    ->visible(fn($record) => $record->status === 'Belum Bayar' && $record->bukti_pembayaran), // Hanya tampil jika status belum lunas dan bukti tersedia,
             ])
             ->bulkActions([
                 //
@@ -125,7 +132,6 @@ class PembayaranResource extends Resource
         return [
             'index' => Pages\ListPembayarans::route('/'),
             'create' => Pages\CreatePembayaran::route('/create'),
-            'edit' => Pages\EditPembayaran::route('/{record}/edit'),
         ];
     }
 }

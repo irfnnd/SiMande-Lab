@@ -153,7 +153,6 @@ class PermohonanController extends Controller
             'status_history' => json_encode($history),
         ]);
 
-        return response()->json(['message' => 'Status updated successfully']);
     }
 
     public function getStatusHistory($id)
