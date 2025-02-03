@@ -48,7 +48,7 @@
                                 <h4 class=" mb-0 text-center">Formulir Permohonan Pengujian</h4>
                             </div>
                             <div class="card-body">
-                                <form action="/permohonan-uji" method="POST">
+                                <form action="/permohonan-uji" method="POST" onsubmit="enableInputs()">
                                     @csrf
                                     <div class="card border-0 mt-4">
                                         <div class="card-header border-0 bg-white">
@@ -210,7 +210,6 @@
                                     <table class="table table-borderless table-hover">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
                                                 <th>ID Permintaan</th>
                                                 <th>Pengambilan Sampel</th>
                                                 <th>Parameter Uji</th>
@@ -221,9 +220,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($permohonan as $index => $data)
+                                            @forelse ($permohonan as  $data)
                                                 <tr>
-                                                    <td>{{ $index + 1 }}</td>
                                                     <td>{{ $data->id }}</td>
                                                     <td>{{ $data->pengambilan_sampel }}</td>
                                                     <td>{{ $data->parameter ?? 'Belum ditentukan' }}
@@ -287,18 +285,18 @@
                         @if (!empty($data))
                             @if ($data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
                                 <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
-                                    method="POST">
+                                    method="POST" class="confirm-form">
                                     @csrf
                                     <input type="hidden" name="status" value="Dibatalkan Pelanggan">
-                                    <button type="submit" class="text-danger">Batalkan</button>
-                                </form>
-                            @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
-                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
-                                    method="POST">
-                                    @csrf
-                                    <input type="hidden" name="status" value="Disetujui Pelanggan">
-                                    <button type="submit" class="btn btn-primary">Setuju</button>
-                                </form>
+                                    <button type="submit" class="btn btn-danger">Batalkan</button>
+                                    </form>
+                                @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
+                                    <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="Disetujui Pelanggan">
+                                        <button type="submit" class="btn btn-primary">Setuju</button>
+                                    </form>
                             @endif
                         @endif
 
@@ -311,6 +309,12 @@
         </section>
 
         <script>
+            function enableInputs() {
+                document.querySelectorAll("input[disabled], select[disabled]").forEach(input => {
+                    input.removeAttribute("disabled");
+                });
+            }
+
             function toggleCards() {
                 const pelangganRadio = document.getElementById("pelanggan");
                 const informasiSampelCard = document.getElementById("informasiSampelCard");
@@ -351,7 +355,7 @@
                             if (data.kode_parameter) {
                                 document.getElementById('kode_parameter').value = data.kode_parameter;
                                 document.getElementById('satuan').value = data.satuan;
-                                document.getElementById('wadah').value = data.satuan;
+                                document.getElementById('wadah').value = data.wadah;
                                 document.getElementById('volume_sampel').value = data.volume_sampel;
                                 document.getElementById('metode_uji').value = data.metode_uji;
                                 document.getElementById('tarif').value = data.tarif;
@@ -503,5 +507,31 @@
                             `<p class="text-danger">Gagal memuat data.</p>`;
                     });
             }
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Ambil semua form dengan class "confirm-form"
+                document.querySelectorAll(".confirm-form").forEach(function(form) {
+                    form.addEventListener("submit", function(event) {
+                        event.preventDefault(); // Hentikan submit form
+
+                        Swal.fire({
+                            title: "Apakah Anda yakin?",
+                            text: "Setelah dibatalkan, maka pengajuan dianggap dibatalkan dan tidak dapat dikembalikan.",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#d33",
+                            cancelButtonColor: "#3085d6",
+                            confirmButtonText: "Ya, batalkan!",
+                            cancelButtonText: "Batal",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit(); // Jika dikonfirmasi, submit form
+                            }
+                        });
+                    });
+                });
+            });
         </script>
     @endsection

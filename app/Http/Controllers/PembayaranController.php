@@ -18,7 +18,10 @@ class PembayaranController extends Controller
         $pelanggan = Pelanggan::where('user_id', $userId)->first();
 
         $idPelanggan = $pelanggan->id;
-        $data = Pembayaran::where('pelanggan_id', $idPelanggan)->get();
+        $data = Pembayaran::where('pelanggan_id', $idPelanggan)
+        ->orderBy('id', 'desc') // Mengurutkan berdasarkan ID terbaru
+        ->get();
+
 
         return view('user.pembayaran', compact( 'data'));
     }

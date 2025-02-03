@@ -6,16 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PermintaanPengujian extends Model
 {
-    protected $fillable = [
-        'pelanggan_id',
-        'pengambilan_sampel',
-        'parameter',
-        'status',
-        'jumlah_titik',
-        'total_biaya',
-        'status_history',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
     public function pelanggan()
     {

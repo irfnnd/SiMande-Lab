@@ -9,6 +9,7 @@ use App\Models\SampelPengujian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pelanggan;
+use Illuminate\Support\Facades\DB;
 
 class PermohonanController extends Controller
 {
@@ -22,7 +23,7 @@ class PermohonanController extends Controller
 
         $parameters = Parameter::all();
         $idPelanggan = $pelanggan->id;
-        $permohonan = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->get();
+        $permohonan = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->orderBy('id', 'desc')->get();
 
         $idPelanggan = $pelanggan->id;
 
@@ -45,33 +46,46 @@ class PermohonanController extends Controller
     public function store(Request $request)
     {
         // Buat permintaan pengujian
-        $permintaanPengujian = PermintaanPengujian::create([
-            'pelanggan_id' => $request->id_pelanggan,
-            'pengambilan_sampel' => $request->pengambilan_sampel,
-            'parameter' => $request->parameter,
-            'jumlah_titik' => $request->jumlah_titik,
-            'total_biaya' => $request->jumlah_biaya,
-        ]);
+        DB::beginTransaction(); // Mulai transaksi
 
-        // Ambil ID dari permintaan pengujian yang baru dibuat
-        $idPermintaan = $permintaanPengujian->id;
+        try {
+            // Insert ke tabel permintaan_pengujians secara manual
+            $idPermintaan = DB::table('permintaan_pengujians')->insertGetId([
+                'pelanggan_id' => $request->id_pelanggan,
+                'pengambilan_sampel' => $request->pengambilan_sampel,
+                'parameter' => $request->parameter,
+                'jumlah_titik' => $request->jumlah_titik,
+                'total_biaya' => $request->jumlah_biaya,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        // Buat sampel pengujian
-        SampelPengujian::create([
-            'permintaan_id' => $idPermintaan,
-            'kode_sampel' => $request->kode_sampel,
-            'tanggal_pengambilan' => $request->tanggal_pengambilan,
-            'waktu_pengambilan' => $request->waktu_pengambilan,
-        ]);
+            // Insert ke tabel sampel_pengujians
+            DB::table('sampel_pengujians')->insert([
+                'permintaan_id' => $idPermintaan,
+                'kode_sampel' => $request->kode_sampel,
+                'tanggal_pengambilan' => $request->tanggal_pengambilan,
+                'waktu_pengambilan' => $request->waktu_pengambilan,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        Pembayaran::create([
-            'permintaan_id' => $idPermintaan,
-            'pelanggan_id' => $request->id_pelanggan,
-        ]);
+            // Insert ke tabel pembayaran
+            DB::table('pembayarans')->insert([
+                'permintaan_id' => $idPermintaan,
+                'pelanggan_id' => $request->id_pelanggan,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        // Redirect atau tampilkan pesan sukses
-        session()->flash('success', 'Permohonan Pengujian berhasil dibuat.');
-        return redirect()->back();
+            DB::commit(); // Simpan semua perubahan ke database
+
+            session()->flash('success', 'Permohonan Pengujian berhasil dibuat.');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack(); // Batalkan semua perubahan jika terjadi error
+            return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+        }
 
         // Redirect atau tampilkan pesan sukses
     }
@@ -152,7 +166,8 @@ class PermohonanController extends Controller
             'status' => $data,
             'status_history' => json_encode($history),
         ]);
-
+        session()->flash('success', 'Permohonan Pengujian berhasil dibatalkan.');
+        return redirect()->back();
     }
 
     public function getStatusHistory($id)
