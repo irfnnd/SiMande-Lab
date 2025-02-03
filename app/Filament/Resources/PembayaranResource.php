@@ -83,13 +83,7 @@ class PembayaranResource extends Resource
                     ->label('Bukti Pembayaran')
                     ->tooltip(fn($record) => 'Klik untuk memperbesar')
                     ->url(fn($record) => $record->bukti_pembayaran ? asset('storage/' . $record->bukti_pembayaran) : null)
-                    ->openUrlInNewTab()
-                    ->hidden(fn($record) => empty($record->bukti_pembayaran)), // Sembunyikan jika kosong
-
-                Tables\Columns\TextColumn::make('bukti_pembayaran_placeholder')
-                    ->label('Bukti Pembayaran')
-                    ->default('Bukti belum diupload')
-                    ->hidden(fn($record) => !empty($record->bukti_pembayaran)),
+                    ->openUrlInNewTab(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
