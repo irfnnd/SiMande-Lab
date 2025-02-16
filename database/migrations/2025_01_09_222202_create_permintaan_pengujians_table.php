@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('parameter')->nullable();
             $table->integer('jumlah_titik')->nullable();
             $table->decimal('total_biaya', 10, 2)->nullable(); // Total biaya
-            $table->string('status')->default('Pending');
+            $table->string('status')->default('Proses Pengajuan');
             $table->json('status_history')->nullable();
             $table->timestamps();
         });

@@ -1,23 +1,23 @@
 @extends('layout')
 @section('content')
-<div class="" data-aos-delay="200">
-    <!-- Teks Selamat Datang -->
-    <div class="position-relative" style="height: 200px; overflow: hidden;">
-        <!-- Hero Text -->
-        <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
-            style="bottom: 0;  z-index: 10; ">
-            <h2 class="fw-bold text-white text-shadow">Pelacakan Proses Pengujian</h2>
-            <p class="mb-0 text-shadow">Proses yang dilakukan akan diperbarui secara real-time</p>
-        </div>
+    <div class="" data-aos-delay="200">
+        <!-- Teks Selamat Datang -->
+        <div class="position-relative" style="height: 200px; overflow: hidden;">
+            <!-- Hero Text -->
+            <div class="hero-text position-absolute text-light p-4 w-100 d-flex flex-column justify-content-end"
+                style="bottom: 0;  z-index: 10; ">
+                <h2 class="fw-bold text-white text-shadow">Pelacakan Proses Pengujian</h2>
+                <p class="mb-0 text-shadow">Proses yang dilakukan akan diperbarui secara real-time</p>
+            </div>
 
-        <div class="hero"
-            style="background-image: url('template-bootstrap/assets/img/labor.jpg');
+            <div class="hero"
+                style="background-image: url('template-bootstrap/assets/img/labor.jpg');
               background-size: cover; background-position: center; height: 500px;">
-        </div>
-        <!-- Carousel -->
+            </div>
+            <!-- Carousel -->
 
+        </div>
     </div>
-</div>
     <section id="appointment" data-aos="fade-up" class="appointment section">
         <div class="container d-flex justify-content-center align-items-center pt-5 pb-5">
             <div class="p-3 rounded" style="width: 100%; max-width: 100vx; background-color: #ffffff;">
@@ -28,32 +28,40 @@
                 <div id="result-table">
                     <!-- Desktop View -->
                     <div id="desktop-view" class="d-none d-md-block">
-                        <div class="card shadow-sm border-0 mb-3">
-                            <div class="card-body">
                                 @forelse ($data as $item)
-                                <div class="mb-4">
-                                    <h5 class="card-title mt-3"><strong>ID Permintaan Pengujian:</strong>
-                                        {{ $item->id }}</h5>
-                                    <p class="d-inline me-3"><strong>Parameter Uji:</strong> <span
-                                            class="text-success">{{ $item->parameter }}</span></p>
-                                    <p class="d-inline me-3"><strong>Jumlah Titik:</strong> <span
-                                            class="text-success">{{ $item->jumlah_titik }}</span></p>
-                                    <p class="d-inline me-3"><strong>Status:</strong> <span
-                                            class="text-success">{{ $item->status }}</span></p>
-                                    <a class="btn btn-sm btn-primary d-inline end-0" data-bs-toggle="modal"
-                                        data-bs-target="#detailStatus" onclick="permintaanId('{{ $item->id }}')">
-                                        Lacak Proses
-                                    </a>
-                                </div>
+                                    <div class="row align-items-center p-4 border-bottom shadow-sm m-3">
+                                        <h5><strong>ID Permintaan Pengujian:</strong> {{ $item->id }}</h5>
+                                        <div class="col-md-3">
+                                            <strong><i class="fa-solid fa-vial me-1"></i> Parameter Uji:</strong>
+                                            <span class="text-success fw-bold">{{ $item->parameter }}</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <strong><i class="fa-solid fa-location-dot me-1"></i> Jumlah Titik:</strong>
+                                            <span class="text-primary fw-bold">{{ $item->jumlah_titik }}</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <strong><i class="fa-solid fa-circle-info me-1"></i> Status:</strong>
+                                            <span class="badge
+                                                {{ $item->status == 'Selesai' ? 'bg-success' : ($item->status == 'Proses' ? 'bg-warning text-dark' : 'bg-secondary') }}">
+                                                {{ $item->status }}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <button class="btn btn-sm btn-primary"
+                                                data-bs-toggle="modal" data-bs-target="#detailStatus"
+                                                onclick="permintaanId('{{ $item->id }}')">
+                                                <i class="fa-solid fa-magnifying-glass me-1"></i> Lacak Proses
+                                            </button>
+                                        </div>
+                                    </div>
                                 @empty
-                                    <div class="card shadow-sm mb-3 border-0">
-                                        <div class="card-body p-4">
-                                            <p class="text-center mb-0">Belum ada tagihan atau permintaan pengujian</p>
+                                    <div class="card shadow-sm border-0">
+                                        <div class="card-body p-4 text-center">
+                                            <p class="mb-0 text-muted"><i class="fa-solid fa-circle-exclamation me-1"></i> Belum ada tagihan atau permintaan pengujian</p>
                                         </div>
                                     </div>
                                 @endforelse
-                            </div>
-                        </div>
+
                     </div>
                     <div id="mobile-view" class="d-md-none">
                         @forelse ($data as $item)
@@ -103,8 +111,8 @@
                             <!-- Timeline akan diisi dengan data dari AJAX -->
                         </div>
                         <div class="mt-4">
-                             <p>Status Saat Ini:</p>
-                             <p class="badge badge-lg bg-success" id="currentStatus"></p>
+                            <p>Status Saat Ini:</p>
+                            <p class="badge badge-lg bg-success" id="currentStatus"></p>
                         </div>
                     </div>
                 </div>

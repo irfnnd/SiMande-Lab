@@ -25,7 +25,7 @@
     <!-- Form Container -->
     <div class="container d-flex justify-content-center align-items-center py-5">
         <div class="p-4 rounded shadow-lg" style="width: 100%; background-color: #ffffff;">
-            <h3 class="text-cente mb-4">Silahkan Download Hasil Pengujian Anda</h3>
+            <h3 class="text-cente mb-4">Silahkan Download Sertifikat Hasil Pengujian Anda</h3>
             <div id="result-table">
                 <!-- Desktop View -->
                 <div id="desktop-view" class="d-none d-md-block">

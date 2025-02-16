@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PembayaranResource\Pages;
 use App\Filament\Resources\PembayaranResource\RelationManagers;
 use App\Models\Pembayaran;
+use App\Models\PermintaanPengujian;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,34 +26,9 @@ class PembayaranResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('permintaan_id')
-                    ->label('Permintaan')
-                    ->relationship('permintaan', 'id') // Pastikan hubungan ini sesuai
-                    ->required(),
-
-                Forms\Components\TextInput::make('jumlah')
-                    ->label('Jumlah Biaya')
-                    ->numeric()
-                    ->step(0.01)
-                    ->required(),
-
-                Forms\Components\Select::make('status')
-                    ->label('Status Pembayaran')
-                    ->options([
-                        'Belum Bayar' => 'Belum Bayar',
-                        'Lunas' => 'Lunas',
-                    ])
-                    ->default('Belum Bayar')
-                    ->required(),
-
-                Forms\Components\DatePicker::make('tanggal_pembayaran')
-                    ->label('Tanggal Pembayaran')
-                    ->nullable(),
-
-                Forms\Components\FileUpload::make('bukti_pembayaran')
-                    ->label('Bukti Pembayaran')
-                    ->directory('bukti-pembayaran') // Lokasi penyimpanan file
-                    ->nullable(),
+                Forms\Components\Textarea::make('keterangan')
+                    ->label('Keterangan')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -77,13 +53,17 @@ class PembayaranResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'Belum Bayar' => 'warning',
+                        'Bukti Pembayaran Tidak Valid' => 'warning',
                         'Lunas' => 'success',
                     }),
-                    Tables\Columns\ImageColumn::make('bukti_pembayaran')
+                Tables\Columns\ImageColumn::make('bukti_pembayaran')
                     ->label('Bukti Pembayaran')
                     ->tooltip(fn($record) => 'Klik untuk memperbesar')
                     ->url(fn($record) => $record->bukti_pembayaran ? asset('storage/' . $record->bukti_pembayaran) : null)
                     ->openUrlInNewTab(),
+
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->default('-'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -99,14 +79,51 @@ class PembayaranResource extends Resource
                     ->color('success')
                     ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
                     ->action(function ($record) {
+
+                        // Ambil riwayat status sebelumnya
+                        $history = $record->permintaan->status_history ? json_decode($record->permintaan->status_history, true) : [];
+
+                        // Tambahkan status baru ke riwayat
+                        $history[] = [
+                            'status' => $record->permintaan->status, // Status sebelumnya
+                            'updated_at' => now()->toDateTimeString(), // Waktu perubahan
+                        ];
+
                         $record->update([
                             'status' => 'Lunas',
                         ]);
                         $record->permintaan->update([
                             'status' => 'Bukti Pembayaran Valid',
+                            'status_history' => json_encode($history),
                         ]);
                     })
                     ->visible(fn($record) => $record->status === 'Belum Bayar' && $record->bukti_pembayaran), // Hanya tampil jika status belum lunas dan bukti tersedia,
+                Tables\Actions\Action::make('invalid')
+                    ->label('Tidak Valid')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('danger')
+                    ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
+                    ->action(function ($record) {
+
+                        // Ambil riwayat status sebelumnya
+                        $history = $record->permintaan->status_history ? json_decode($record->permintaan->status_history, true) : [];
+
+                        // Tambahkan status baru ke riwayat
+                        $history[] = [
+                            'status' => $record->permintaan->status, // Status sebelumnya
+                            'updated_at' => now()->toDateTimeString(), // Waktu perubahan
+                        ];
+
+                        $record->update([
+                            'status' => 'Bukti Pembayaran Tidak Valid',
+                        ]);
+                        $record->permintaan->update([
+                            'status' => 'Bukti Pembayaran Tidak Valid',
+                            'status_history' => json_encode($history),
+                        ]);
+                    }),
+                    Tables\Actions\EditAction::make()->label('Edit')
+
             ])
             ->bulkActions([
                 //

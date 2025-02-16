@@ -17,6 +17,7 @@ use App\Filament\Resources\PermintaanPengujianResource\Actions\PermintaanPenguji
 use App\Filament\Resources\PermintaanPengujianResource\Actions\ViewSamplePelanggan;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class PermintaanPengujianResource extends Resource
 {
@@ -82,7 +83,16 @@ class PermintaanPengujianResource extends Resource
                 ->label('Edit Status')
                 ->icon('heroicon-o-pencil')
                 ->form([
-                    Forms\Components\TextInput::make('status'),
+                    Forms\Components\Select::make('status'
+                        )->options([
+                            'Pending' => 'Pending',
+                            'Disetujui' => 'Disetujui',
+                            'Ditolak' => 'Ditolak',
+                            'Menunggu Pembayaran' => 'Menunggu Pembayaran',
+                            'Menunggu Pengambilan Sampel' => 'Menunggu Pengambilan Sampel',
+                            'Proses Pengujian' => 'Proses Pengujian',
+                            'Selesai' => 'Selesai',
+                        ]),
                 ])
                 ->action(function (Model $record, array $data): void {
                     // Ambil status baru
@@ -102,11 +112,10 @@ class PermintaanPengujianResource extends Resource
                     ]);
                 })
                 ->modalHeading('Ubah Status')
-                ->modalButton('Simpan')
+                ->modalSubmitActionLabel('Perbarui')
                 ->successNotificationTitle('Status berhasil diperbarui')
-                ->visible(function (User $user) {
-                    return $user->role == 'petugas';
-                }),
+                ->modalWidth('lg')
+                ->visible(fn () => Auth::check() && Auth::user()->role === 'petugas'),
 
                 PermintaanPengujianViewAction::make('sampel_petugas')->label('Info Sampel')->icon('heroicon-s-clipboard-document-list')
                 ->visible(function ($record) {

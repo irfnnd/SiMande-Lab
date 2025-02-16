@@ -29,4 +29,9 @@ class PermintaanPengujian extends Model
     {
         return $this->hasOne(SampelPengujian::class, 'permintaan_id', 'id');
     }
+
+    public function getDisplayNameAttribute()
+    {
+        return "{$this->id} - {$this->pelanggan->nama_pelanggan}";
+    }
     }

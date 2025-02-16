@@ -16,13 +16,21 @@ class SertifikatController extends Controller
     public function index()
     {
         $userId = Auth::id();
+
+        // Ambil pelanggan berdasarkan user_id
         $pelanggan = Pelanggan::where('user_id', $userId)->first();
 
-        $idPelanggan = $pelanggan->id;
-        $permintaan = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->first();
-        $permintaan_id = $permintaan->id;
-        $data = SertifikatPengujian::where('permintaan_id', $permintaan_id)->get();
-        return view('user.sertifikat',compact('data'));
+        if ($pelanggan) {
+            // Ambil semua permintaan_id yang dimiliki oleh pelanggan tersebut
+            $permintaanIds = PermintaanPengujian::where('pelanggan_id', $pelanggan->id)
+                ->pluck('id'); // Mengambil semua ID permintaan yang terkait
+
+            // Ambil semua sertifikat yang memiliki permintaan_id dalam daftar $permintaanIds
+            $data = SertifikatPengujian::whereIn('permintaan_id', $permintaanIds)->get();
+
+            // Kirim data ke view
+            return view('user.sertifikat', compact('data'));
+        }
     }
 
     /**

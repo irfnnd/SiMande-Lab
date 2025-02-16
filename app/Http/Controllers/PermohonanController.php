@@ -25,11 +25,11 @@ class PermohonanController extends Controller
         $idPelanggan = $pelanggan->id;
         $permohonan = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->orderBy('id', 'desc')->get();
 
-        $idPelanggan = $pelanggan->id;
+        // $idPelanggan = $pelanggan->id;
 
         // Generate kode sampel
         $kodeSampel = SampelPengujian::generateKode();
-        return view('user.permohonan-uji', compact('idPelanggan', 'kodeSampel', 'parameters', 'permohonan'));
+        return view('user.permohonan-uji', compact('pelanggan', 'kodeSampel', 'parameters', 'permohonan'));
     }
 
     /**

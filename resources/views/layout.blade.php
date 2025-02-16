@@ -30,6 +30,7 @@
     <link href="{{ asset('template-bootstrap/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -76,7 +77,7 @@
 
                 @if (Auth::check())
                     <a class="cta-btn bg-danger d-none d-sm-block" href="logout">
-                        Logout
+                        <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
                     </a>
                 @else
                     {{-- Tampilkan tombol Masuk dan Daftar jika pengguna belum login --}}

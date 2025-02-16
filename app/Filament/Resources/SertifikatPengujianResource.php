@@ -29,8 +29,14 @@ class SertifikatPengujianResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('permintaan_id')
-                    ->label('ID Permintaan Pengujian')
-                    ->relationship('permintaanPengujian', 'id')
+                    ->label('ID Permintaan Pengujian - Nama Pelanggan')
+                    ->options(
+                        \App\Models\PermintaanPengujian::with('pelanggan')
+                            ->get()
+                            ->pluck('display_name', 'id')
+                    )
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\TextInput::make('nomor_sertifikat')
                     ->label('Nomor Sertifikat')

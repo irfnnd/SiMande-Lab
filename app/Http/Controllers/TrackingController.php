@@ -18,7 +18,7 @@ class TrackingController extends Controller
         $pelanggan = Pelanggan::where('user_id', $userId)->first();
 
         $idPelanggan = $pelanggan->id;
-        $data = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->get();
+        $data = PermintaanPengujian::where('pelanggan_id', $idPelanggan)->get()->sortByDesc('id');
         return view('user.tracking', compact('data'));
     }
 

@@ -56,13 +56,20 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-3">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="id_pelanggan" class="form-label">ID Pelanggan <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="id_pelanggan" id="id_pelanggan"
-                                                        class="form-control" required readonly value="{{ $idPelanggan }}">
+                                                        class="form-control" required readonly value="{{ $pelanggan->id }}">
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
+                                                    <label for="nama_pelanggan" class="form-label">Nama Pelanggan <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" name="nama_pelanggan" id="nama_pelanggan"
+                                                        class="form-control" required readonly
+                                                        value="{{ $pelanggan->nama_pelanggan }}">
+                                                </div>
+                                                <div class="col-md-4">
                                                     <label for="kode_sampel" class="form-label">Kode Sampel <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="kode_sampel" id="kode_sampel"
@@ -191,7 +198,8 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-md-12 d-flex ms-3">
-                                            <button type="submit" class="btn btn-primary">Ajukan Permohonan</button>
+                                            <button type="submit" class="btn btn-primary"><i
+                                                    class="fa-solid fa-paper-plane me-2"></i>Ajukan Permohonan </button>
                                         </div>
                                     </div>
                                 </form>
@@ -246,6 +254,7 @@
                                                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#detailModal"
                                                             onclick="getPermintaanDetail('{{ $data->id }}')">
+                                                            <i class="fa-solid fa-circle-info me-2"></i>
                                                             Detail
                                                         </button>
 
@@ -282,24 +291,23 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        @if (!empty($data))
+                        @if (empty($data))
                             @if ($data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
-                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
-                                    method="POST" class="confirm-form">
+                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST"
+                                    class="confirm-form">
                                     @csrf
                                     <input type="hidden" name="status" value="Dibatalkan Pelanggan">
                                     <button type="submit" class="btn btn-danger">Batalkan</button>
-                                    </form>
-                                @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
-                                    <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}"
-                                        method="POST">
-                                        @csrf
-                                        <input type="hidden" name="status" value="Disetujui Pelanggan">
-                                        <button type="submit" class="btn btn-primary">Setuju</button>
-                                    </form>
+                                </form>
+                            @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
+                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST"
+                                    class="confirm-form">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Disetujui Pelanggan">
+                                    <button type="submit" class="btn btn-primary">Setuju</button>
+                                </form>
                             @endif
                         @endif
-
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -475,7 +483,6 @@
                                     <tr><th>ID Permintaan</th><td>${data.id}</td></tr>
                                     <tr><th>Nama Pelanggan</th><td>${data.pelanggan_id}</td></tr>
                                     <tr><th>Pengambilan Sampel</th><td>${data.pengambilan_sampel}</td></tr>
-                                    <tr><th>Nama Petugas</th><td>${data.petugas_pengambilan}</td></tr>
                                     <tr><th>Jumlah Titik</th><td>${data.jumlah_titik}</td></tr>
                                     <tr><th>Total Biaya</th><td>${data.total_biaya}</td></tr>
                                     <tr><th>Status</th><td>${data.status}</td></tr>
@@ -500,6 +507,39 @@
 
                         // Masukkan konten tabel ke dalam modal
                         document.getElementById('modal-content').innerHTML = modalContent;
+                        // Pastikan tombol dimasukkan ke dalam modal-footer
+                        const modalFooter = document.querySelector('.modal-footer');
+
+                        if (modalFooter) {
+                            let footerContent = '';
+
+                            if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Pelanggan') {
+                                footerContent += `
+                                    <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                        <input type="hidden" name="status" value="Dibatalkan Pelanggan">
+                                        <button type="submit" class="btn btn-danger">Batalkan</button>
+                                    </form>
+                                `;
+                            }
+
+                            if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Petugas' && data.parameter != null) {
+                                footerContent += `
+                                <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                    <input type="hidden" name="status" value="Disetujui Pelanggan">
+                                    <button type="submit" class="btn btn-primary">Setuju</button>
+                                </form>
+                            `;
+                            }
+
+                            // Tambahkan tombol close agar selalu ada
+                            footerContent += `
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            `;
+
+                            modalFooter.innerHTML = footerContent;
+                        }
+
+
                     })
                     .catch(error => {
                         console.error("Error fetching data:", error);

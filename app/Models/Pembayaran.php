@@ -13,6 +13,7 @@ class Pembayaran extends Model
         'status',
         'tanggal_pembayaran',
         'bukti_pembayaran',
+        'keterangan'
     ];
     public function permintaan()
     {
