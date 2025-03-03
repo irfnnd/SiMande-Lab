@@ -66,11 +66,16 @@
                 <nav id="navmenu" class="navmenu">
                     <ul>
                         <li><a class="{{ request()->is('home') ? 'active' : '' }}" href="/home">Beranda<br></a></li>
-                        <li><a class="{{ request()->is('permohonan-uji') ? 'active' : '' }}" href="/permohonan-uji">Permohonan uji</a></li>
-                        <li><a class="{{ request()->is('pembayaran') ? 'active' : '' }}" href="/pembayaran">Pembayaran</a></li>
-                        <li><a class="{{ request()->is('tracking') ? 'active' : '' }}" href="/tracking">Tracking</a></li>
-                        <li><a class="{{ request()->is('feedback') ? 'active' : '' }}" href="/feedback">Feedback</a></li>
-                        <li><a class="{{ request()->is('sertifikat') ? 'active' : '' }}" href="/sertifikat">Sertifikat</a></li>
+                        <li><a class="{{ request()->is('permohonan-uji') ? 'active' : '' }}"
+                                href="/permohonan-uji">Permohonan uji</a></li>
+                        <li><a class="{{ request()->is('pembayaran') ? 'active' : '' }}"
+                                href="/pembayaran">Pembayaran</a></li>
+                        <li><a class="{{ request()->is('tracking') ? 'active' : '' }}" href="/tracking">Tracking</a>
+                        </li>
+                        <li><a class="{{ request()->is('feedback') ? 'active' : '' }}" href="/feedback">Feedback</a>
+                        </li>
+                        <li><a class="{{ request()->is('sertifikat') ? 'active' : '' }}"
+                                href="/sertifikat">Sertifikat</a></li>
                     </ul>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>
@@ -103,7 +108,8 @@
                 <div class="col-md-4 mb-3">
                     <h5>Tentang Kami</h5>
                     <p>
-                        Kami adalah penyedia layanan uji kualitas air dan lingkungan dengan akurasi dan standar profesional.
+                        Kami adalah penyedia layanan uji kualitas air dan lingkungan dengan akurasi dan standar
+                        profesional.
                         Kepercayaan Anda adalah prioritas kami.
                     </p>
                 </div>
@@ -111,13 +117,19 @@
                 <!-- Navigasi -->
                 <div class="col-md-4 mb-3">
                     <h5>Navigasi</h5>
-                    <ul class="list-unstyled " >
-                        <li><a href="/" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Beranda</a></li>
-                        <li><a href="/permohonan-uji" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Permohonan Uji</a></li>
-                        <li><a href="/pembayaran" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Pembayaran</a></li>
-                        <li><a href="/tracking" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Tracking</a></li>
-                        <li><a href="/feedback" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Feedback</a></li>
-                        <li><a href="/sertifikat" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Sertifikat</a></li>
+                    <ul class="list-unstyled ">
+                        <li><a href="/" class=" text-decoration-none" style="color: rgb(75, 75, 75)">Beranda</a>
+                        </li>
+                        <li><a href="/permohonan-uji" class=" text-decoration-none"
+                                style="color: rgb(75, 75, 75)">Permohonan Uji</a></li>
+                        <li><a href="/pembayaran" class=" text-decoration-none"
+                                style="color: rgb(75, 75, 75)">Pembayaran</a></li>
+                        <li><a href="/tracking" class=" text-decoration-none"
+                                style="color: rgb(75, 75, 75)">Tracking</a></li>
+                        <li><a href="/feedback" class=" text-decoration-none"
+                                style="color: rgb(75, 75, 75)">Feedback</a></li>
+                        <li><a href="/sertifikat" class=" text-decoration-none"
+                                style="color: rgb(75, 75, 75)">Sertifikat</a></li>
                     </ul>
                 </div>
 
@@ -125,14 +137,17 @@
                 <div class="col-md-4 mb-3">
                     <h5>Kontak Kami</h5>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-geo-alt-fill me-2" ></i> Jl. Contoh No. 123, Jakarta</li>
+                        <li><i class="bi bi-geo-alt-fill me-2"></i> Jl. Contoh No. 123, Jakarta</li>
                         <li><i class="bi bi-telephone-fill me-2"></i> +62 812 3456 7890</li>
                         <li><i class="bi bi-envelope-fill me-2"></i> info@contoh.com</li>
                     </ul>
                     <div class="mt-3">
-                        <a href="#" class=" me-3" style="color: rgb(75, 75, 75)"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class=" me-3" style="color: rgb(75, 75, 75)"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="" style="color: rgb(75, 75, 75)"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class=" me-3" style="color: rgb(75, 75, 75)"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="#" class=" me-3" style="color: rgb(75, 75, 75)"><i
+                                class="bi bi-twitter"></i></a>
+                        <a href="#" class="" style="color: rgb(75, 75, 75)"><i
+                                class="bi bi-instagram"></i></a>
                     </div>
                 </div>
             </div>
@@ -162,6 +177,7 @@
     <!-- Main JS File -->
     <script src="{{ asset('template-bootstrap/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     @if (session('success'))
         <script>
             Swal.fire({
@@ -171,6 +187,16 @@
                 timer: 3000,
                 timerProgressBar: true,
                 showConfirmButton: false
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ session('error') }}",
             });
         </script>
     @endif

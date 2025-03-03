@@ -28,39 +28,40 @@
                 <div id="result-table">
                     <!-- Desktop View -->
                     <div id="desktop-view" class="d-none d-md-block">
-                                @forelse ($data as $item)
-                                    <div class="row align-items-center p-4 border-bottom shadow-sm m-3">
-                                        <h5><strong>ID Permintaan Pengujian:</strong> {{ $item->id }}</h5>
-                                        <div class="col-md-3">
-                                            <strong><i class="fa-solid fa-vial me-1"></i> Parameter Uji:</strong>
-                                            <span class="text-success fw-bold">{{ $item->parameter }}</span>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <strong><i class="fa-solid fa-location-dot me-1"></i> Jumlah Titik:</strong>
-                                            <span class="text-primary fw-bold">{{ $item->jumlah_titik }}</span>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <strong><i class="fa-solid fa-circle-info me-1"></i> Status:</strong>
-                                            <span class="badge
+                        @forelse ($data as $item)
+                            <div class="row align-items-center p-4 border-bottom shadow-sm m-3">
+                                <h5><strong>ID Permintaan Pengujian:</strong> {{ $item->id }}</h5>
+                                <div class="col-md-3">
+                                    <strong><i class="fa-solid fa-vial me-1"></i> Parameter Uji:</strong>
+                                    <span class="text-success fw-bold">{{ $item->parameter }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong><i class="fa-solid fa-location-dot me-1"></i> Jumlah Titik:</strong>
+                                    <span class="text-primary fw-bold">{{ $item->jumlah_titik }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong><i class="fa-solid fa-circle-info me-1"></i> Status:</strong>
+                                    <span
+                                        class="badge
                                                 {{ $item->status == 'Selesai' ? 'bg-success' : ($item->status == 'Proses' ? 'bg-warning text-dark' : 'bg-secondary') }}">
-                                                {{ $item->status }}
-                                            </span>
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <button class="btn btn-sm btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#detailStatus"
-                                                onclick="permintaanId('{{ $item->id }}')">
-                                                <i class="fa-solid fa-magnifying-glass me-1"></i> Lacak Proses
-                                            </button>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="card shadow-sm border-0">
-                                        <div class="card-body p-4 text-center">
-                                            <p class="mb-0 text-muted"><i class="fa-solid fa-circle-exclamation me-1"></i> Belum ada tagihan atau permintaan pengujian</p>
-                                        </div>
-                                    </div>
-                                @endforelse
+                                        {{ $item->status }}
+                                    </span>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#detailStatus" onclick="permintaanId('{{ $item->id }}')">
+                                        <i class="fa-solid fa-magnifying-glass me-1"></i> Lacak Proses
+                                    </button>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4 text-center">
+                                    <p class="mb-0 text-muted"><i class="fa-solid fa-circle-exclamation me-1"></i> Belum ada
+                                        tagihan atau permintaan pengujian</p>
+                                </div>
+                            </div>
+                        @endforelse
 
                     </div>
                     <div id="mobile-view" class="d-md-none">
@@ -145,7 +146,17 @@
                         '<p class="text-muted">Tidak ada riwayat status.</p>';
                 }
 
-                document.getElementById('currentStatus').textContent = data.permintaan.status;
+                const updatedAt = new Date(data.permintaan.updated_at).toLocaleString('id-ID', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+
+                document.getElementById('currentStatus').textContent = data.permintaan.status + ' - ' + updatedAt;
+
             })
             .catch(error => console.error('Error:', error));
     }

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('volume_sampel');
             $table->decimal('tarif', 10, 2);
             $table->text('keterangan')->nullable();
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

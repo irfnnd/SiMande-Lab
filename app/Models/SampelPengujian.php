@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class SampelPengujian extends Model
 {
@@ -15,6 +16,7 @@ class SampelPengujian extends Model
         'kelurahan',
         'kecamatan',
         'kota',
+        'provinsi',
         'tanggal_pengambilan',
         'waktu_pengambilan',
         'petugas_pengambilan',
@@ -39,6 +41,7 @@ class SampelPengujian extends Model
         'titik_koordinat',
         'alasan_sampel_tidak_diambil',
         'rincian_kondisi',
+        'updated_by',
     ];
 
     public function permintaanPengujian()
@@ -47,15 +50,22 @@ class SampelPengujian extends Model
     }
     public static function generateKode(): string
     {
-        // Ambil kode terakhir
-        $lastSampel = self::latest('id')->first();
+        $tahunSekarang = date('Y');
+
+        // Ambil kode terakhir berdasarkan tahun
+        $lastSampel = self::where('kode_sampel', 'like', "SMPL{$tahunSekarang}%")
+            ->latest('id')
+            ->first();
 
         // Tentukan nomor baru
-        $number = $lastSampel ? intval(substr($lastSampel->kode_sampel, 4)) + 1 : 1;
+        $number = $lastSampel
+            ? intval(substr($lastSampel->kode_sampel, -4)) + 1
+            : 1;
 
-        // Format menjadi PRM001, PRM002, dst.
-        return 'SMPL' . str_pad($number, 4, '0', STR_PAD_LEFT);
+        // Format menjadi SMPLYYYY0001, SMPLYYYY0002, dst.
+        return 'SMPL' . $tahunSekarang . str_pad($number, 4, '0', STR_PAD_LEFT);
     }
+
 
     public function parameter()
     {
@@ -65,6 +75,12 @@ class SampelPengujian extends Model
     protected static function boot()
     {
         parent::boot();
+
+
+        // Saat mengupdate data
+        static::updating(function ($model) {
+            $model->updated_by = Auth::user()->name;
+        });
 
         static::saved(function ($sampelPengujian) {
             // Ambil relasi permintaanPengujian
@@ -76,12 +92,12 @@ class SampelPengujian extends Model
                 ]);
 
             // Update total_biaya di permintaanPengujian
-             $totalBiaya = $sampelPengujian->total_biaya;
+            $totalBiaya = $sampelPengujian->total_biaya;
             PermintaanPengujian::where('id', $sampelPengujian->permintaan_id)
-            ->update([
-                'jumlah_titik' => $sampelPengujian->jumlah_titik,
-                'total_biaya' => $totalBiaya
-            ]);
+                ->update([
+                    'jumlah_titik' => $sampelPengujian->jumlah_titik,
+                    'total_biaya' => $totalBiaya
+                ]);
         });
     }
 

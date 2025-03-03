@@ -57,17 +57,20 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-4">
-                                                    <label for="id_pelanggan" class="form-label">ID Pelanggan <span
+                                                    <label for="id_pelanggan" class="form-label">Kode Pelanggan <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" name="id_pelanggan" id="id_pelanggan"
+                                                    <input type="hidden" name="id_pelanggan" id="id_pelanggan"
                                                         class="form-control" required readonly value="{{ $pelanggan->id }}">
+                                                    <input type="text" name="kode_pelanggan" id="kode_pelanggan"
+                                                        class="form-control" required readonly
+                                                        value="{{ $pelanggan->kode_pelanggan }}">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label for="nama_pelanggan" class="form-label">Nama Pelanggan <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="nama_pelanggan" id="nama_pelanggan"
                                                         class="form-control" required readonly
-                                                        value="{{ $pelanggan->nama_pelanggan }}">
+                                                        value="{{ $pelanggan->user->name }}">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label for="kode_sampel" class="form-label">Kode Sampel <span
@@ -107,7 +110,8 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-6">
-                                                    <label for="tanggal_pengambilan" class="form-label">Tanggal Pengambilan
+                                                    <label for="tanggal_pengambilan" class="form-label">Tanggal
+                                                        Pengambilan
                                                         <span class="text-danger">*</span></label>
                                                     <input type="date" name="tanggal_pengambilan"
                                                         data-name="tanggal_pengambilan" id="tanggal_pengambilan"
@@ -218,7 +222,7 @@
                                     <table class="table table-borderless table-hover">
                                         <thead>
                                             <tr>
-                                                <th>ID Permintaan</th>
+                                                <th>Kode Sampel</th>
                                                 <th>Pengambilan Sampel</th>
                                                 <th>Parameter Uji</th>
                                                 <th>Jumlah Titik</th>
@@ -230,7 +234,7 @@
                                         <tbody>
                                             @forelse ($permohonan as  $data)
                                                 <tr>
-                                                    <td>{{ $data->id }}</td>
+                                                    <td>{{ $data->sampel->kode_sampel }}</td>
                                                     <td>{{ $data->pengambilan_sampel }}</td>
                                                     <td>{{ $data->parameter ?? 'Belum ditentukan' }}
                                                     <td>{{ $data->jumlah_titik ?? 'Belum ditentukan' }}</td>
@@ -291,30 +295,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        @if (empty($data))
-                            @if ($data->pengambilan_sampel == 'Pelanggan' && $data->status == 'Pending')
-                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST"
-                                    class="confirm-form">
-                                    @csrf
-                                    <input type="hidden" name="status" value="Dibatalkan Pelanggan">
-                                    <button type="submit" class="btn btn-danger">Batalkan</button>
-                                </form>
-                            @elseif ($data->status == 'Pending' && $data->pengambilan_sampel == 'Petugas' && $data->parameter != null)
-                                <form action="{{ route('permohonan.updateStatus', ['id' => $data->id]) }}" method="POST"
-                                    class="confirm-form">
-                                    @csrf
-                                    <input type="hidden" name="status" value="Disetujui Pelanggan">
-                                    <button type="submit" class="btn btn-primary">Setuju</button>
-                                </form>
-                            @endif
-                        @endif
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
                     </div>
                 </div>
             </div>
         </div>
 
         </section>
+        <!-- Tambahkan ini di layout atau sebelum </body> -->
 
         <script>
             function enableInputs() {
@@ -420,7 +408,7 @@
                                     <tr><th>ID Permintaan</th><td>${data.id}</td></tr>
                                     <tr><th>Nama Pelanggan</th><td>${data.pelanggan_id}</td></tr>
                                     <tr><th>Pengambilan Sampel</th><td>${data.pengambilan_sampel}</td></tr>
-                                    <tr><th>Nama Petugas</th><td>${data.petugas_pengambilan}</td></tr>
+                                    <tr><th>Petugas Pengambilan</th><td>${sampel.petugas_pengambilan}</td></tr>
                                     <tr><th>Jumlah Titik</th><td>${data.jumlah_titik}</td></tr>
                                     <tr><th>Total Biaya</th><td>${data.total_biaya}</td></tr>
                                     <tr><th>Status</th><td>${data.status}</td></tr>
@@ -444,7 +432,6 @@
                                     <tr><th>Kota</th><td>${sampel.kota}</td></tr>
                                     <tr><th>Tanggal Pengambilan</th><td>${sampel.tanggal_pengambilan}</td></tr>
                                     <tr><th>Waktu Pengambilan</th><td>${sampel.waktu_pengambilan}</td></tr>
-                                    <tr><th>Petugas Pengambilan</th><td>${sampel.petugas_pengambilan}</td></tr>
                                     <tr><th>Acuan Metode</th><td>${sampel.acuan_metode}</td></tr>
                                     <tr><th>Teknik Pengambilan</th><td>${sampel.teknik_pengambilan}</td></tr>
                                     <tr><th>Wadah</th><td>${sampel.wadah}</td></tr>
@@ -510,24 +497,49 @@
                         // Pastikan tombol dimasukkan ke dalam modal-footer
                         const modalFooter = document.querySelector('.modal-footer');
 
+
                         if (modalFooter) {
                             let footerContent = '';
 
                             if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Pelanggan') {
                                 footerContent += `
-                                    <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                     <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="hidden" name="status" value="Dibatalkan Pelanggan">
-                                        <button type="submit" class="btn btn-danger">Batalkan</button>
+                                        <button type="submit"  class="btn btn-danger">Batalkan</button>
+                                    </form>
+                                `;
+                            }
+                            if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Petugas' && data
+                                .parameter == null) {
+                                footerContent += `
+                                    <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="status" value="Dibatalkan Pelanggan">
+                                        <button type="submit"  class="btn btn-danger">Batalkan</button>
+                                    </form>
+                                `;
+                            }
+                            if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Petugas' && data
+                                .parameter != null && sampel.tanggal_pengambilan == null) {
+                                footerContent += `
+                                    <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="status" value="Dibatalkan Pelanggan">
+                                        <button type="submit"  class="btn btn-danger">Batalkan</button>
                                     </form>
                                 `;
                             }
 
-                            if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Petugas' && data.parameter != null) {
+                            if (data.status === 'Proses Pengajuan' && data.pengambilan_sampel === 'Petugas' && data
+                                .parameter != null) {
                                 footerContent += `
-                                <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
-                                    <input type="hidden" name="status" value="Disetujui Pelanggan">
-                                    <button type="submit" class="btn btn-primary">Setuju</button>
-                                </form>
+
+                               <form action="/permohonan/updateStatus/${data.id}" method="POST" class="confirm-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="status" value="Disetujui Pelanggan">
+                                        <button type="submit"  class="btn btn-success">Setuju</button>
+                                    </form>
                             `;
                             }
 
@@ -551,26 +563,25 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // Ambil semua form dengan class "confirm-form"
-                document.querySelectorAll(".confirm-form").forEach(function(form) {
-                    form.addEventListener("submit", function(event) {
+                document.body.addEventListener("submit", function(event) {
+                    if (event.target.classList.contains("confirm-form")) {
                         event.preventDefault(); // Hentikan submit form
 
                         Swal.fire({
                             title: "Apakah Anda yakin?",
-                            text: "Setelah dibatalkan, maka pengajuan dianggap dibatalkan dan tidak dapat dikembalikan.",
+                            text: "Perubahan yang dilakukan tidak dapat dikembalikan.",
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#d33",
                             cancelButtonColor: "#3085d6",
-                            confirmButtonText: "Ya, batalkan!",
+                            confirmButtonText: "Yakin!",
                             cancelButtonText: "Batal",
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                form.submit(); // Jika dikonfirmasi, submit form
+                                event.target.submit(); // Submit form jika dikonfirmasi
                             }
                         });
-                    });
+                    }
                 });
             });
         </script>

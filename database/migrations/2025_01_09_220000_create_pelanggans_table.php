@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('pelanggans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('nama_pelanggan');
+            $table->string('kode_pelanggan')->unique();
             $table->string('nama_perusahaan');
             $table->string('no_telepon');
-            $table->string('email');
             $table->string('alamat');
+            $table->string('created_by')->default('user');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

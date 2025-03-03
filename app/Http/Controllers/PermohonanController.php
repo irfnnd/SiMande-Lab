@@ -84,7 +84,9 @@ class PermohonanController extends Controller
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollBack(); // Batalkan semua perubahan jika terjadi error
-            return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+
+            session()->flash('error', 'Permohonan Pengujian gagal dibuat, silahkan coba lagi.');
+            return redirect()->back();
         }
 
         // Redirect atau tampilkan pesan sukses

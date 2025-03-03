@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->string('nomor_sertifikat')->unique()->nullable();
             $table->date('tanggal_terbit')->nullable();
             $table->string('file_path')->nullable();
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

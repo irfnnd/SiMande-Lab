@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('kelurahan')->nullable();
             $table->string('kecamatan')->nullable();
             $table->string('kota')->nullable();
+            $table->string('provinsi')->nullable();
             $table->date('tanggal_pengambilan')->nullable();
             $table->time('waktu_pengambilan')->nullable();
             $table->string('petugas_pengambilan')->nullable();
@@ -45,6 +46,7 @@ return new class extends Migration
             $table->string('titik_koordinat')->nullable();
             $table->string('alasan_sampel_tidak_diambil')->nullable();
             $table->text('rincian_kondisi')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

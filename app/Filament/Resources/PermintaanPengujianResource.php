@@ -17,6 +17,7 @@ use App\Filament\Resources\PermintaanPengujianResource\Actions\PermintaanPenguji
 use App\Filament\Resources\PermintaanPengujianResource\Actions\ViewSamplePelanggan;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class PermintaanPengujianResource extends Resource
@@ -37,9 +38,14 @@ class PermintaanPengujianResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('pelanggan.nama_pelanggan')
+                Tables\Columns\TextColumn::make('rowIndex')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('pelanggan.user.name')
                     ->label('Nama Pelanggan')
-                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('sampel.kode_sampel')
+                    ->label('Kode Sampel')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pengambilan_sampel')
                     ->label('Pengambilan Sampel'),
@@ -47,7 +53,7 @@ class PermintaanPengujianResource extends Resource
                     ->label('Parameter')
                     ->default('Belum ditentukan'),
                 Tables\Columns\TextColumn::make('jumlah_titik')->default('Belum ditentukan'),
-                Tables\Columns\TextColumn::make('total_biaya')->default('Belum ditentukan'),
+                Tables\Columns\TextColumn::make('total_biaya')->default('Belum ditentukan')->money('idr', true), // Format ke Rupiah,
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -80,55 +86,73 @@ class PermintaanPengujianResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('editStatus')
-                ->label('Edit Status')
-                ->icon('heroicon-o-pencil')
-                ->form([
-                    Forms\Components\Select::make('status'
+                    ->hiddenLabel()
+                    ->icon('heroicon-s-pencil-square')
+                    ->tooltip('Perbarui Status Permintaan Pengujian')
+                    ->form([
+                        Forms\Components\Select::make(
+                            'status'
                         )->options([
-                            'Pending' => 'Pending',
-                            'Disetujui' => 'Disetujui',
-                            'Ditolak' => 'Ditolak',
-                            'Menunggu Pembayaran' => 'Menunggu Pembayaran',
-                            'Menunggu Pengambilan Sampel' => 'Menunggu Pengambilan Sampel',
-                            'Proses Pengujian' => 'Proses Pengujian',
-                            'Selesai' => 'Selesai',
-                        ]),
-                ])
-                ->action(function (Model $record, array $data): void {
-                    // Ambil status baru
-                    $newStatus = $data['status'];
+                                    'Pending' => 'Pending',
+                                    'Disetujui' => 'Disetujui',
+                                    'Ditolak' => 'Ditolak',
+                                    'Menunggu Pembayaran' => 'Menunggu Pembayaran',
+                                    'Menunggu Pengambilan Sampel' => 'Menunggu Pengambilan Sampel',
+                                    'Proses Pengujian' => 'Proses Pengujian',
+                                    'Selesai' => 'Selesai',
+                                ]),
+                    ])
+                    ->action(function (Model $record, array $data): void {
+                        // Ambil status baru
+                        $newStatus = $data['status'];
 
-                    // Simpan status lama ke dalam riwayat
-                    $history = $record->status_history ? json_decode($record->status_history, true) : [];
-                    $history[] = [
-                        'status' => $record->status, // Status sebelumnya
-                        'updated_at' => now()->toDateTimeString(), // Waktu perubahan
-                    ];
+                        // Simpan status lama ke dalam riwayat
+                        $history = $record->status_history ? json_decode($record->status_history, true) : [];
+                        $history[] = [
+                            'status' => $record->status, // Status sebelumnya
+                            'updated_at' => now()->toDateTimeString(), // Waktu perubahan
+                        ];
 
-                    // Update status dan riwayat
-                    $record->update([
-                        'status' => $newStatus,
-                        'status_history' => json_encode($history),
-                    ]);
-                })
-                ->modalHeading('Ubah Status')
-                ->modalSubmitActionLabel('Perbarui')
-                ->successNotificationTitle('Status berhasil diperbarui')
-                ->modalWidth('lg')
-                ->visible(fn () => Auth::check() && Auth::user()->role === 'petugas'),
+                        // Update status dan riwayat
+                        $record->update([
+                            'status' => $newStatus,
+                            'status_history' => json_encode($history),
+                        ]);
+                        Notification::make()
+                            ->success()
+                            ->title('Status berhasil diperbarui')
+                            ->body('Status permintaan pengujian berhasil diperbarui. Perbaruan status akan dikirim ke email pelanggan.')
+                            ->send();
+                    })
+                    ->modalHeading('Perbarui Status Permintaan Pengujian')
+                    ->modalSubmitActionLabel('Perbarui')
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Status berhasil diperbarui')
+                            ->body('Status permintaan pengujian berhasil diperbarui. Perbaruan status akan dikirim ke email pelanggan.'),
+                    )
+                    ->modalWidth('lg')
+                    ->visible(fn() => Auth::check() && Auth::user()->role === 'petugas'),
 
-                PermintaanPengujianViewAction::make('sampel_petugas')->label('Info Sampel')->icon('heroicon-s-clipboard-document-list')
-                ->visible(function ($record) {
-                    return $record->pengambilan_sampel === 'Petugas';
-                }),
-                ViewSamplePelanggan::make('sampel_pelanggan')->label('Info Sampel')->icon('heroicon-s-clipboard-document-list')
-                ->visible(function ($record) {
-                    return $record->pengambilan_sampel === 'Pelanggan';
-                }),
+                PermintaanPengujianViewAction::make('sampel_petugas')
+                    ->hiddenLabel()
+                    ->tooltip('Lihat Sampel Pengujian Petugas')
+                    ->icon('heroicon-s-clipboard-document-list')
+                    ->visible(function ($record) {
+                        return $record->pengambilan_sampel === 'Petugas';
+                    }),
+                ViewSamplePelanggan::make('sampel_pelanggan')
+                    ->hiddenLabel()
+                    ->tooltip('Lihat Sampel Pengujian Pelanggan')
+                    ->icon('heroicon-s-clipboard-document-list')
+                    ->visible(function ($record) {
+                        return $record->pengambilan_sampel === 'Pelanggan';
+                    }),
 
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ])
 
             ->defaultSort('id', 'desc');

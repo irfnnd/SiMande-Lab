@@ -29,7 +29,7 @@ class SertifikatPengujianResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('permintaan_id')
-                    ->label('ID Permintaan Pengujian - Nama Pelanggan')
+                    ->label('Kode Sampel - Nama Pelanggan')
                     ->options(
                         \App\Models\PermintaanPengujian::with('pelanggan')
                             ->get()
@@ -56,11 +56,15 @@ class SertifikatPengujianResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('permintaanPengujian.id')
-                    ->label('ID Permintaan')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('permintaanPengujian.pelanggan.nama_pelanggan')
-                    ->label('Nama Pelanggan'),
+                Tables\Columns\TextColumn::make('rowIndex')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('permintaanPengujian.sampel.kode_sampel')
+                    ->label('Kode Sampel')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('permintaanPengujian.pelanggan.user.name')
+                    ->label('Nama Pelanggan')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_terbit')
                     ->label('Tanggal Terbit')
                     ->default('Belum Diisi'),
@@ -91,14 +95,14 @@ class SertifikatPengujianResource extends Resource
                     })
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('Isi Data Sertifikat'),
+                Tables\Actions\EditAction::make()->label('Edit'),
                 Tables\Actions\ViewAction::make()
                     ->label('Lihat Detail')
                     ->icon('heroicon-s-clipboard-document-list')
                     ->color('info'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

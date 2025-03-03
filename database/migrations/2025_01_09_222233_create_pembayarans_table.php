@@ -15,8 +15,9 @@ return new class extends Migration {
             $table->foreignId('permintaan_id')->constrained('permintaan_pengujians')->onDelete('cascade');
             $table->foreignId('pelanggan_id')->constrained('pelanggans')->onDelete('cascade');
             $table->string('bukti_pembayaran')->nullable();
-            $table->string('status')->default('Belum Bayar');
+            $table->string('status')->default('Menunggu Pembayaran');
             $table->text('keterangan')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

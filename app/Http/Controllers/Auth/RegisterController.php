@@ -70,8 +70,11 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        $kode_pelanggan = Pelanggan::generateKode();
+
         Pelanggan::create([
             'user_id' => $user->id, // Ambil ID dari pengguna yang baru dibuat
+            'kode_pelanggan' => $kode_pelanggan,
             'nama_pelanggan' => $data['name'],
             'nama_perusahaan' => $data['nama_perusahaan'],
             'no_telepon' => $data['no_hp'],

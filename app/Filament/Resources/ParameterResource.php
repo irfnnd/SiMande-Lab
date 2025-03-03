@@ -89,6 +89,9 @@ class ParameterResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('rowIndex')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('kode')
                     ->label('Kode')
                     ->sortable()

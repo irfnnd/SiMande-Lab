@@ -32,7 +32,10 @@ class KepuasanPelangganResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('pelanggan.nama_pelanggan')->label('Nama Pelanggan')->searchable(),
+                Tables\Columns\TextColumn::make('rowIndex')
+                    ->label('No')
+                    ->rowIndex(),
+                TextColumn::make('pelanggan.user.name')->label('Nama Pelanggan')->searchable(),
                 TextColumn::make('jenis_kelamin'),
                 TextColumn::make('umur'),
                 TextColumn::make('pekerjaan'),

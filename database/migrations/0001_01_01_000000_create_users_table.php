@@ -22,6 +22,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->enum('status', ['Aktif','Tidak Aktif'])->default('Aktif');
+            $table->string('created_by')->default('user');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
 

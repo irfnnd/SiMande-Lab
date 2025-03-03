@@ -8,7 +8,7 @@
                 @forelse ($this->activities as $activity)
                     <li class="py-2">
                         <div class="text-sm font-medium">
-                            {{ $activity->pelanggan->nama_pelanggan ?? 'Pelanggan Tidak Diketahui' }}
+                            {{ $activity->pelanggan->user->name ?? 'Pelanggan Tidak Diketahui' }}
                         </div>
                         <div class="text-xs text-gray-500">
                             Status: {{ $activity->status }} - {{ $activity->created_at->format('d M Y H:i') }}

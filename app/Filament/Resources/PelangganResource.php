@@ -33,9 +33,12 @@ class PelangganResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID Pelanggan')->searchable(),
-                Tables\Columns\TextColumn::make('nama_pelanggan')
+                Tables\Columns\TextColumn::make('rowIndex')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('kode_pelanggan')
+                    ->label('Kode Pelanggan')->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('Nama Pelanggan')->searchable(),
                 Tables\Columns\TextColumn::make('nama_perusahaan')
                     ->label('Nama Perusahaan')->searchable(),
@@ -45,6 +48,13 @@ class PelangganResource extends Resource
                     ->label('Email'),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat'),
+                Tables\Columns\TextColumn::make('user.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Aktif' => 'success',
+                        'Tidak Aktif' => 'danger',
+                    }),
             ])
             ->filters([
                 //

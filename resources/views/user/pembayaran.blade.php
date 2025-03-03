@@ -30,43 +30,51 @@
                     <!-- Desktop View -->
                     <div id="desktop-view" class="d-none d-md-block">
                         @forelse ($data as $item)
-                        <div class="shadow-sm border-0 p-4">
-                            <h5 class="card-title">
-                                <strong>ID Permintaan Pengujian:</strong> {{ $item->permintaan_id }}
-                            </h5>
+                            <div class="shadow-sm border-0 p-4">
+                                <h5 class="card-title">
+                                    <strong>ID Permintaan Pengujian:</strong> {{ $item->permintaan_id }}
+                                </h5>
 
-                            <div class="d-flex flex-wrap align-items-center justify-content-between">
-                                <div>
-                                    <p class="d-inline me-3">
-                                        <strong>Total Harga:</strong> Rp. {{ number_format($item->permintaan->total_biaya, 0, ',', '.') }}
-                                    </p>
-                                    <p class="d-inline me-3">
-                                        <strong>Status:</strong> <span class="text-success">{{ $item->status }}</span>
-                                    </p>
-                                    @if ($item->bukti_pembayaran == null)
+                                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                    <div>
                                         <p class="d-inline me-3">
-                                            <strong>Bukti Pembayaran:</strong> <span class="text-danger">Bukti pembayaran belum diupload</span>
+                                            <strong>Total Harga:</strong> Rp.
+                                            {{ number_format($item->permintaan->total_biaya, 0, ',', '.') }}
                                         </p>
-                                    @else
                                         <p class="d-inline me-3">
-                                            <strong>Bukti Pembayaran:</strong>
-                                            <a href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a>
+                                            <strong>Status:</strong> <span class="text-success">{{ $item->status }}</span>
                                         </p>
-                                    @endif
-                                    <p class="d-inline me-3">
-                                        <strong>Tagihan:</strong>
-                                        <a href="{{ route('tagihan.unduh', ['id' => $item->id]) }}" class="text-primary">Cetak</a>
-                                    </p>
+
+                                        @if ($item->bukti_pembayaran == null)
+                                            <p class="d-inline me-3">
+                                                <strong>Bukti Pembayaran:</strong> <span class="text-danger">Bukti
+                                                    pembayaran belum diupload</span>
+                                            </p>
+                                        @else
+                                            <p class="d-inline me-3">
+                                                <strong>Bukti Pembayaran:</strong>
+                                                <a href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a>
+                                            </p>
+                                        @endif
+                                        <p class="d-inline me-3">
+                                            <strong>Tagihan:</strong>
+                                            <a href="{{ route('tagihan.unduh', ['id' => $item->id]) }}"
+                                                class="text-primary">Cetak</a>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#uploadImageModal"
+                                            onclick="pembayaranId('{{ $item->id }}')">
+                                            <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                                            Upload Bukti Pembayaran
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#uploadImageModal" onclick="pembayaranId('{{ $item->id }}')">
-                                        <i class="fa-solid fa-cloud-arrow-up me-2"></i>
-                                        Upload Bukti Pembayaran
-                                    </button>
-                                </div>
+                                <p class="d-inline me-3">
+                                    <strong>Keterangan:</strong> <span class="text-success">{{ $item->keterangan }}</span>
+                                </p>
                             </div>
-                        </div>
 
                         @empty
                             <div class="card shadow-sm mb-3 border-0">
@@ -91,6 +99,10 @@
                                             class="text-primary">Cetak</a></p>
                                     <p class=""><strong>Bukti Pembayaran:</strong> <a
                                             href="storage/{{ $item->bukti_pembayaran }}" class="text-info">Lihat</a></p>
+                                    <p class="d-inline me-3">
+                                        <strong>Keterangan:</strong> <span
+                                            class="text-success">{{ $item->keterangan }}</span>
+                                    </p>
                                     <div class="text-end">
                                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#uploadImageModal"

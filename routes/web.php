@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('permohonan-uji', PermohonanController::class);
     Route::get('/get-parameter/{id}', [PermohonanController::class, 'getParameter']);
 
-    Route::post('permohonan-uji/{id}/status', [PermohonanController::class, 'updateStatus'])->name('permohonan.updateStatus');
+    Route::post('/permohonan/updateStatus/{id}', [PermohonanController::class, 'updateStatus'])->name('permohonan.updateStatus');
     Route::get('/get-status-history/{id}', [TrackingController::class, 'getStatusHistory']);
     Route::resource('tracking', TrackingController::class);
     Route::resource('sertifikat', SertifikatController::class);

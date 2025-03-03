@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Components\Tabs;
 
 class PembayaranResource extends Resource
 {
@@ -37,10 +38,13 @@ class PembayaranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('permintaan.id')
-                    ->label('ID Permintaan')
+                Tables\Columns\TextColumn::make('rowIndex')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('permintaan.sampel.kode_sampel')
+                    ->label('Kode Sampel')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('permintaan.pelanggan.nama_pelanggan')
+                Tables\Columns\TextColumn::make('permintaan.pelanggan.user.name')
                     ->label('Nama Pelanggan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('permintaan.total_biaya')
@@ -52,6 +56,8 @@ class PembayaranResource extends Resource
                     ->label('Status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
+                        'Menunggu Pembayaran' => 'warning',
+                        'Menunggu Konfirmasi' => 'warning',
                         'Belum Bayar' => 'warning',
                         'Bukti Pembayaran Tidak Valid' => 'warning',
                         'Lunas' => 'success',
@@ -74,8 +80,8 @@ class PembayaranResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('validasi')
-                    ->label('Validasi')
-                    ->icon('heroicon-o-check-circle')
+                    ->hiddenLabel()
+                    ->icon('heroicon-s-check-circle')
                     ->color('success')
                     ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
                     ->action(function ($record) {
@@ -93,18 +99,25 @@ class PembayaranResource extends Resource
                             'status' => 'Lunas',
                         ]);
                         $record->permintaan->update([
-                            'status' => 'Bukti Pembayaran Valid',
+                            'status' => 'Proses Pengujian',
                             'status_history' => json_encode($history),
                         ]);
                     })
-                    ->visible(fn($record) => $record->status === 'Belum Bayar' && $record->bukti_pembayaran), // Hanya tampil jika status belum lunas dan bukti tersedia,
-                Tables\Actions\Action::make('invalid')
-                    ->label('Tidak Valid')
-                    ->icon('heroicon-o-check-circle')
+                    ->tooltip(fn($record) => 'Validasi Bukti Pembayaran')
+                    ->visible(fn($record) => $record->status != 'Lunas'), // Hanya tampil jika status belum lunas dan bukti tersedia,
+                    Tables\Actions\Action::make('invalid')
+                    ->hiddenLabel()
+                    ->icon('heroicon-s-x-circle')
+                    ->tooltip(fn($record) => 'Bukti Pembayaran Tidak Valid')
                     ->color('danger')
-                    ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
-                    ->action(function ($record) {
-
+                    ->requiresConfirmation()
+                    ->form([
+                        Forms\Components\Textarea::make('keterangan')
+                            ->label('Keterangan')
+                            ->required()
+                            ->placeholder('Masukkan alasan pembayaran tidak valid...')
+                    ])
+                    ->action(function ($record, array $data) {
                         // Ambil riwayat status sebelumnya
                         $history = $record->permintaan->status_history ? json_decode($record->permintaan->status_history, true) : [];
 
@@ -116,18 +129,18 @@ class PembayaranResource extends Resource
 
                         $record->update([
                             'status' => 'Bukti Pembayaran Tidak Valid',
+                            'keterangan' => $data['keterangan'], // Simpan keterangan
                         ]);
                         $record->permintaan->update([
                             'status' => 'Bukti Pembayaran Tidak Valid',
                             'status_history' => json_encode($history),
                         ]);
                     }),
-                    Tables\Actions\EditAction::make()->label('Edit')
-
             ])
             ->bulkActions([
                 //
-            ]);
+            ])
+            ->defaultSort('id', 'desc');
     }
 
 

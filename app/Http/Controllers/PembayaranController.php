@@ -53,6 +53,7 @@ class PembayaranController extends Controller
         // Update database dengan path gambar
         $pembayaran = Pembayaran::findOrFail($request->pembayaran_id);
         $pembayaran->bukti_pembayaran = $path;
+        $pembayaran->status = 'Menunggu Konfirmasi';
         $pembayaran->save();
         session()->flash('success', 'Bukti Pembayaran berhasil diupload.');
         return redirect()->back();

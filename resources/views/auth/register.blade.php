@@ -7,6 +7,7 @@
     <title>Daftar</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://biropbj.sumbarprov.go.id/img/sumbar.png" rel="icon">
     <style>
         body {
             background-color: #f8f9fa;
@@ -96,9 +97,9 @@
             </div>
             <div class="mb-3">
                 <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
-                <input id="alamat" type="text" class="form-control @error('alamat') is-invalid @enderror"
-                    name="alamat" value="{{ old('alamat') }}" required autocomplete="alamat"
-                    placeholder="Masukkan alamat lengkap">
+                <textarea id="alamat" class="form-control @error('alamat') is-invalid @enderror"
+                    name="alamat" required autocomplete="alamat"
+                    placeholder="Masukkan alamat lengkap">{{ old('alamat') }}</textarea>
                 @error('alamat')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

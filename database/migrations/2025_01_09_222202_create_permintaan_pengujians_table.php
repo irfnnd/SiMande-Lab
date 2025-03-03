@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('total_biaya', 10, 2)->nullable(); // Total biaya
             $table->string('status')->default('Proses Pengajuan');
             $table->json('status_history')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Parameter extends Model
 {
@@ -18,8 +19,24 @@ class Parameter extends Model
         'volume_sampel',
         'tarif',
         'keterangan',
+        'created_by',
+        'updated_by',
     ];
+    protected static function boot()
+    {
+        parent::boot();
 
+        // Saat membuat data baru
+        static::creating(function ($model) {
+            $model->created_by = Auth::user()->name;
+            $model->updated_by = Auth::user()->name;
+        });
+
+        // Saat mengupdate data
+        static::updating(function ($model) {
+            $model->updated_by = Auth::user()->name;
+        });
+    }
     public static function generateKode(): string
     {
         // Ambil kode terakhir
