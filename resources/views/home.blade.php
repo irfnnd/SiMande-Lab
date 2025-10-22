@@ -44,58 +44,72 @@
   <!-- Container -->
   <div class="container mt-5 pb-5">
     <div class="row gy-4">
-      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="team-member d-flex align-items-start">
-          <div class="pic"><img src="https://iik.ac.id/blog/wp-content/uploads/2023/06/tlm-1206.jpeg" class="img-fluid" alt=""></div>
-          <div class="member-info">
-            <h4>Permohonan Uji</h4>
-            <span>Ajukan Pengujian Anda Sekarang!</span>
-            <p>Kami siap membantu memenuhi kebutuhan pengujian Anda dengan layanan profesional dan terpercaya</p>
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="team-member d-flex align-items-start">
+            <div class="pic">
+              <img src="https://iik.ac.id/blog/wp-content/uploads/2023/06/tlm-1206.jpeg" class="img-fluid" alt="">
+            </div>
+            <div class="member-info">
+              <h4>Permohonan Uji</h4>
+              <span>Ajukan Pengujian Anda Sekarang!</span>
+              <p>Kami siap membantu memenuhi kebutuhan pengujian Anda dengan layanan profesional dan terpercaya.</p>
+            </div>
           </div>
         </div>
-      </div><!-- End Team Member -->
 
-      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="team-member d-flex align-items-start">
-          <div class="pic"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQThjXjEUHN9J6gm4MsUOrBW0jK4QqiHIWcoA&s" class="img-fluid" alt=""></div>
-          <div class="member-info">
-            <h4>Pembayaran</h4>
-            <span>Anesthesiologist</span>
-            <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="team-member d-flex align-items-start">
+            <div class="pic">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQThjXjEUHN9J6gm4MsUOrBW0jK4QqiHIWcoA&s" class="img-fluid" alt="">
+            </div>
+            <div class="member-info">
+              <h4>Pembayaran</h4>
+              <span>Transaksi Aman dan Mudah</span>
+              <p>Lakukan pembayaran dengan berbagai metode yang kami sediakan secara cepat dan terjamin keamanannya.</p>
+            </div>
           </div>
         </div>
-      </div><!-- End Team Member -->
-      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="team-member d-flex align-items-start">
-          <div class="pic"><img src="https://nordvpn.com/wp-content/uploads/blog-cross-site-tracking.svg" class="img-fluid" alt=""></div>
-          <div class="member-info">
-            <h4>Tracking</h4>
-            <span>Anesthesiologist</span>
-            <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="team-member d-flex align-items-start">
+            <div class="pic">
+              <img src="https://nordvpn.com/wp-content/uploads/blog-cross-site-tracking.svg" class="img-fluid" alt="">
+            </div>
+            <div class="member-info">
+              <h4>Tracking</h4>
+              <span>Lacak Progres Uji Anda</span>
+              <p>Ketahui status dan perkembangan proses pengujian Anda secara real-time kapan pun dan di mana pun.</p>
+            </div>
           </div>
         </div>
-      </div><!-- End Team Member -->
-      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="team-member d-flex align-items-start">
-          <div class="pic"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWGqJQwCYSeqe-NcLdPQCaJCZtmLNEi6vvcA&s" class="img-fluid" alt=""></div>
-          <div class="member-info">
-            <h4>Feedback</h4>
-            <span>Anesthesiologist</span>
-            <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="team-member d-flex align-items-start">
+            <div class="pic">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWGqJQwCYSeqe-NcLdPQCaJCZtmLNEi6vvcA&s" class="img-fluid" alt="">
+            </div>
+            <div class="member-info">
+              <h4>Feedback</h4>
+              <span>Sampaikan Pendapat Anda</span>
+              <p>Bantu kami meningkatkan kualitas layanan dengan memberikan masukan atau ulasan terhadap layanan yang Anda terima.</p>
+            </div>
           </div>
         </div>
-      </div><!-- End Team Member -->
-      <div class="col-lg-6 offset-lg-3 mb-2" data-aos="fade-up" data-aos-delay="200">
-        <div class="team-member d-flex align-items-start">
-          <div class="pic"><img src="https://png.pngtree.com/png-vector/20230526/ourmid/pngtree-gold-luxury-certified-badge-with-red-ribbon-and-white-combination-color-vector-png-image_7109577.png" class="img-fluid" alt=""></div>
-          <div class="member-info">
-            <h4>Sertifikat</h4>
-            <span>Anesthesiologist</span>
-            <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+
+        <div class="col-lg-6 offset-lg-3 mb-2" data-aos="fade-up" data-aos-delay="200">
+          <div class="team-member d-flex align-items-start">
+            <div class="pic">
+              <img src="https://png.pngtree.com/png-vector/20230526/ourmid/pngtree-gold-luxury-certified-badge-with-red-ribbon-and-white-combination-color-vector-png-image_7109577.png" class="img-fluid" alt="">
+            </div>
+            <div class="member-info">
+              <h4>Sertifikat</h4>
+              <span>Bukti Resmi Pengujian</span>
+              <p>Dapatkan sertifikat resmi sebagai tanda bukti bahwa produk Anda telah melalui proses pengujian sesuai standar.</p>
+            </div>
           </div>
         </div>
-      </div><!-- End Team Member -->
-    </div>
+      </div>
+
   </div>
 </section>
 @endsection

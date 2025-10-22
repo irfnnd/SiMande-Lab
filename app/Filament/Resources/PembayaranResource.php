@@ -14,7 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Tabs;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 class PembayaranResource extends Resource
 {
     protected static ?string $model = Pembayaran::class;
@@ -84,7 +86,7 @@ class PembayaranResource extends Resource
                     ->icon('heroicon-s-check-circle')
                     ->color('success')
                     ->requiresConfirmation() // Meminta konfirmasi sebelum tindakan
-                    ->action(function ($record) {
+                    ->action(function (Model $record) {
 
                         // Ambil riwayat status sebelumnya
                         $history = $record->permintaan->status_history ? json_decode($record->permintaan->status_history, true) : [];
@@ -104,13 +106,15 @@ class PembayaranResource extends Resource
                         ]);
                     })
                     ->tooltip(fn($record) => 'Validasi Bukti Pembayaran')
-                    ->visible(fn($record) => $record->status != 'Lunas'), // Hanya tampil jika status belum lunas dan bukti tersedia,
+                    ->visible(fn($record) => $record->status != 'Lunas')
+                    ->visible(fn() => Auth::check() && Auth::user()->role === 'petugas'), // Hanya tampil jika status belum lunas dan bukti tersedia,
                     Tables\Actions\Action::make('invalid')
                     ->hiddenLabel()
                     ->icon('heroicon-s-x-circle')
                     ->tooltip(fn($record) => 'Bukti Pembayaran Tidak Valid')
                     ->color('danger')
                     ->requiresConfirmation()
+                    ->visible(fn() => Auth::check() && Auth::user()->role === 'petugas')
                     ->form([
                         Forms\Components\Textarea::make('keterangan')
                             ->label('Keterangan')

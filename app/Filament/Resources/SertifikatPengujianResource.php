@@ -40,7 +40,7 @@ class SertifikatPengujianResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('nomor_sertifikat')
                     ->label('Nomor Sertifikat')
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 Forms\Components\DatePicker::make('tanggal_terbit')
                     ->label('Tanggal Terbit')
@@ -68,11 +68,10 @@ class SertifikatPengujianResource extends Resource
                 Tables\Columns\TextColumn::make('tanggal_terbit')
                     ->label('Tanggal Terbit')
                     ->default('Belum Diisi'),
-                Tables\Columns\TextColumn::make('file_path')
-                    ->badge()
+                Tables\Columns\ImageColumn::make('file_path')
                     ->label('File')
+                    ->height(30)
                     ->url(fn($record) => asset('storage/' . $record->file_path), true)
-                    ->color('info')
                     ->openUrlInNewTab()
                     ->default('Belum Diisi'),
             ])

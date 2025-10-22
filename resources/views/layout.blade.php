@@ -11,7 +11,7 @@
 
 
     <!-- Favicons -->
-    <link href="https://biropbj.sumbarprov.go.id/img/sumbar.png" rel="icon">
+    <link href="logo1.png" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Fonts -->
@@ -58,8 +58,8 @@
             <div class="container position-relative d-flex align-items-center justify-content-between">
                 <a href="index.html" class=" d-flex align-items-center me-auto">
                     <!-- Uncomment the line below if you also wish to use an image logo -->
-                    <img src="https://biropbj.sumbarprov.go.id/img/sumbar.png" alt="Logo SiMande-Lab" class="logo me-2"
-                        style="height: 40px;">
+                    <img src="logo1.png" alt="Logo SiMande-Lab" class="logo me-2"
+                        style="height: 45px;">
                     <h1 class="fs-5" style="margin:0">SiMande-Lab</h1>
                 </a>
 
@@ -72,11 +72,11 @@
                                 href="/pembayaran">Pembayaran</a></li>
                         <li><a class="{{ request()->is('tracking') ? 'active' : '' }}" href="/tracking">Tracking</a>
                         </li>
-                        <li><a class="{{ request()->is('feedback') ? 'active' : '' }}" href="/feedback">Feedback</a>
-                        </li>
                         <li><a class="{{ request()->is('sertifikat') ? 'active' : '' }}"
-                                href="/sertifikat">Sertifikat</a></li>
-                    </ul>
+                            href="/sertifikat">Sertifikat</a></li>
+                            <li><a class="{{ request()->is('feedback') ? 'active' : '' }}" href="/feedback">Feedback</a>
+                            </li>
+                        </ul>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>
 
@@ -177,7 +177,7 @@
     <!-- Main JS File -->
     <script src="{{ asset('template-bootstrap/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     @if (session('success'))
         <script>
             Swal.fire({
