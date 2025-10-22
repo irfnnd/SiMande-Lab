@@ -23,25 +23,25 @@ SiMande-Lab adalah aplikasi web yang dirancang untuk membantu pengelolaan data e
 
 ### Halaman Pelanggan
 
-    ![Halaman Pelanggan] (screenshots-sistem/halaman-pelanggan.png)
-    ![Halaman Form Pengajuan] (screenshots-sistem/form-pengajuan.png)
-    ![Halaman Data Pengajuan] (screenshots-sistem/data-pengajuan.png)
+    ![Halaman Pelanggan](screenshots-sistem/halaman-pelanggan.png)
+    ![Halaman Form Pengajuan](screenshots-sistem/form-pengajuan.png)
+    ![Halaman Data Pengajuan](screenshots-sistem/data-pengajuan.png)
 
 ### Halaman Dashboard Admin
 
-    ![Halaman Dashboard Admin] (screenshots-sistem/halaman-admin.png)
+    ![Halaman Dashboard Admin](screenshots-sistem/halaman-admin.png)
 
 ### Halaman Petugas
 
-    ![Halaman Petugas] (screenshots-sistem/data-pengajuan-petugas.png)
+    ![Halaman Petugas](screenshots-sistem/data-pengajuan-petugas.png)
 
 ### Tagihan 
 
-    ![Tagihan] (screenshots-sistem/tagihan.png)
+    ![Tagihan](screenshots-sistem/tagihan.png)
 
 ### Perbaruan Status Email
 
-    ![Halaman Petugas] (screenshots-sistem/status-email.png)
+    ![Halaman Petugas](screenshots-sistem/status-email.png)
 
 
 ## Instalasi
