@@ -29,7 +29,7 @@ SiMande-Lab adalah aplikasi web yang dirancang untuk membantu pengelolaan data e
 
 ### Halaman Dashboard Admin
 
-    ![Halaman Dashboard Admin](screenshots-sistem/halaman-admin.png)
+    ![Halaman Dashboard Admin](screenshots-sistem/dashboard-admin.png)
 
 ### Halaman Petugas
 
